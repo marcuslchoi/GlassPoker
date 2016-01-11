@@ -1,0 +1,21 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.pathwayinnovations.glasspoker"
+        },
+        "cordova-plugin-game-center": {
+            "PACKAGE_NAME": "com.pathwayinnovations.glasspoker"
+        },
+        "cc.fovea.cordova.purchase": {
+            "PACKAGE_NAME": "com.pathwayinnovations.glasspoker"
+        }
+    },
+    "dependent_plugins": {}
+}
