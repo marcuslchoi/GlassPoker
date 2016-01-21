@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\BetSliderAction.cs" />
      <Compile Include="Assets\Scripts\BettingTextDisplay.cs" />
      <Compile Include="Assets\Scripts\CallButtonAction.cs" />
+     <Compile Include="Assets\Scripts\CheckBetEquality.cs" />
      <Compile Include="Assets\Scripts\ConfirmBetButton.cs" />
      <Compile Include="Assets\Scripts\DealCard.cs" />
      <Compile Include="Assets\Scripts\FoldButtonAction.cs" />

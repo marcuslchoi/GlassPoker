@@ -48,25 +48,13 @@ public class FoldButtonAction : MonoBehaviour {
 			BettingTextDisplay.currentPlayerPos = BettingTextDisplay.activePlayerPosList[BettingTextDisplay.activePlayerPosList.IndexOf(foldedPlayerPos) + 1];
 		}
 
-		print (BettingTextDisplay.previousPlayerPos+ " " +BettingTextDisplay.currentPlayerPos);
-
 		//remove current player pos from active player pos list
 		BettingTextDisplay.activePlayerPosList.Remove(foldedPlayerPos);
 
 		//FOLDED PLAYER POS LIST: IS THIS NEEDED?
 		BettingTextDisplay.foldedPlayerPosList.Add(foldedPlayerPos);
 
-		//check if all bets are equal. If so, move bets to pot and begin next round or showdown
-		for (var i = 0; i < BettingTextDisplay.activePlayerPosList.Count-1; i++) {
-
-			if (btd.betAmountText [BettingTextDisplay.activePlayerPosList[i]].text != btd.betAmountText [BettingTextDisplay.activePlayerPosList[i + 1]].text) {
-				break;
-			} else if (i == BettingTextDisplay.activePlayerPosList.Count - 2) {
-			
-				print("move bets to pot");
-			}
-		}
-
+		CheckBetEquality.CheckIfBetsAreEqual ();
 
 	}
 }

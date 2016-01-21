@@ -35,5 +35,6 @@ public class CallButtonAction : MonoBehaviour {
 			BettingTextDisplay.currentPlayerPos = BettingTextDisplay.activePlayerPosList[BettingTextDisplay.activePlayerPosList.IndexOf(BettingTextDisplay.previousPlayerPos) + 1];
 		}
 
+		CheckBetEquality.CheckIfBetsAreEqual ();
 	}
 }
