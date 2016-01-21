@@ -21,6 +21,9 @@ public class BettingTextDisplay : MonoBehaviour {
 
 	public static List<int> activePlayerList;
 	public static List<int> activePlayerPosList = new List<int>();
+	public static List<int> foldedPlayerPosList = new List<int>();
+
+	public static Text potAmountText;
 
 	//this is a constant
 	private List<int> allPlayerPosList = new List<int>(){0,1,2,3,4,5,6,7,8};
@@ -30,8 +33,15 @@ public class BettingTextDisplay : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
+		//DO ALL THIS IN A DIFFERENT FUNCTION THAT GETS CALLED EVERY NEW GAME??
+		//USE THE FOLDED PLAYER POS LIST??
+
+		GameObject potAmntTextObject = new GameObject ();
+		potAmntTextObject = GameObject.Find ("potAmountText");
+		potAmountText = potAmntTextObject.GetComponent<Text>();
+
 		//THE LIST OF ACTIVE PLAYERS (TO BE RETRIEVED FROM SERVER). This is used to create the active player position list
-		activePlayerList = new List<int>(){myPlayerNumber,3,6,7,5};
+		activePlayerList = new List<int>(){myPlayerNumber,3,4,7,5,8,0};
 
 		//putting players in position with myPlayerNumber at position 0
 		//make sure my player number goes into position 0. My position + 2 goes to position 2,
@@ -40,7 +50,7 @@ public class BettingTextDisplay : MonoBehaviour {
 		{
 			if (activePlayerNumber >= myPlayerNumber) {
 
-				activePlayerPosList.Add (activePlayerNumber - myPlayerNumber);  // + (activePlayer-myPlayerNumber) 
+				activePlayerPosList.Add (activePlayerNumber - myPlayerNumber); 
 			
 			} else {
 			
