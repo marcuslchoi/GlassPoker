@@ -11,6 +11,7 @@ public class BetSliderAction : MonoBehaviour {
 
 	void Start () {
 
+		//when game starts, the slider is inactive. Slider is activated when bet/raise button is pressed
 		gameObject.SetActive(false);
 		sliderValText.text = "";
 		confirmBetButton.SetActive (false);
@@ -21,6 +22,7 @@ public class BetSliderAction : MonoBehaviour {
 		sliderObject = GameObject.Find ("BetSlider");
 		betSlider = sliderObject.GetComponent<Slider> ();
 
+		//slider value text is equal to the slider value
 		sliderValText.text = betSlider.value.ToString();
 	}
 }

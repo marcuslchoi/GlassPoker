@@ -18,7 +18,7 @@ public class BetButtonAction : MonoBehaviour {
 		sliderObject = GameObject.Find ("BetSlider");
 		betSlider = sliderObject.GetComponent<Slider> ();
 
-		//get the game object for chip and bet texts, get the BettingTextDisplay component
+		//get the game object for chip and bet texts, get the BettingTextDisplay component to use betAmountText and chipAmountText
 		GameObject textGameObject = GameObject.Find ("Chip and Bet Amount Texts");
 		BettingTextDisplay btd = textGameObject.GetComponent<BettingTextDisplay> ();
 
@@ -41,6 +41,7 @@ public class BetButtonAction : MonoBehaviour {
 		
 		}
 
+		//assign value to slider value text
 		sliderValText.text = betSlider.value.ToString();
 	}
 }

@@ -4,7 +4,6 @@ using System.Collections;
 
 public class CallButtonAction : MonoBehaviour {
 
-	//private GameObject textGameObject; 
 
 	public void Call()
 	{
@@ -12,7 +11,6 @@ public class CallButtonAction : MonoBehaviour {
 		var currentPlayerPos = BettingTextDisplay.currentPlayerPos;
 		var previousPlayerPos = BettingTextDisplay.previousPlayerPos;
 
-		//texts = GameObject.FindWithTag ("ChipBetTexts");
 		GameObject textGameObject = GameObject.Find ("Chip and Bet Amount Texts");
 		BettingTextDisplay btd = textGameObject.GetComponent<BettingTextDisplay> ();
 
@@ -26,15 +24,15 @@ public class CallButtonAction : MonoBehaviour {
 		//assign current player to previous player before incrementing to next player
 		BettingTextDisplay.previousPlayerPos = BettingTextDisplay.currentPlayerPos;
 
-		//USE ACTIVE PLAYER POSITIONS LIST
-		if (BettingTextDisplay.currentPlayerPos == 8) {
+		//finding the new current player position based on active player position list
+		if (BettingTextDisplay.activePlayerPosList.IndexOf(BettingTextDisplay.previousPlayerPos) == BettingTextDisplay.activePlayerPosList.Count-1) {
 
-			BettingTextDisplay.currentPlayerPos = 0;
+			BettingTextDisplay.currentPlayerPos = BettingTextDisplay.activePlayerPosList[0];
 
 
 		} else {
 
-			BettingTextDisplay.currentPlayerPos = BettingTextDisplay.currentPlayerPos + 1;
+			BettingTextDisplay.currentPlayerPos = BettingTextDisplay.activePlayerPosList[BettingTextDisplay.activePlayerPosList.IndexOf(BettingTextDisplay.previousPlayerPos) + 1];
 		}
 
 	}

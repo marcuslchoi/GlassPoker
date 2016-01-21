@@ -29,19 +29,18 @@ public class ConfirmBetButton : MonoBehaviour {
 		//bet amount of current player becomes the slider value
 		btd.betAmountText [currentPlayerPos].text = betSliderValInt.ToString();
 
-		//assign current player to previous player
+		//assign current player (before incrementing) to previous player
 		BettingTextDisplay.previousPlayerPos = BettingTextDisplay.currentPlayerPos;
 
-		//increment current player
-		//USE ACTIVE PLAYER POSITIONS LIST
-		if (BettingTextDisplay.currentPlayerPos == 8) {
+		//finding the new current player position based on active player position list (COPIED FROM CALLBUTTONACTION SCRIPT)
+		if (BettingTextDisplay.activePlayerPosList.IndexOf(BettingTextDisplay.previousPlayerPos) == BettingTextDisplay.activePlayerPosList.Count-1) {
 
-			BettingTextDisplay.currentPlayerPos = 0;
+			BettingTextDisplay.currentPlayerPos = BettingTextDisplay.activePlayerPosList[0];
 
 
 		} else {
 
-			BettingTextDisplay.currentPlayerPos = BettingTextDisplay.currentPlayerPos + 1;
+			BettingTextDisplay.currentPlayerPos = BettingTextDisplay.activePlayerPosList[BettingTextDisplay.activePlayerPosList.IndexOf(BettingTextDisplay.previousPlayerPos) + 1];
 		}
 
 		//hide slider, slider text, confirm button

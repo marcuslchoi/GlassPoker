@@ -6,10 +6,10 @@ using System.Collections.Generic;
 
 public class BettingTextDisplay : MonoBehaviour {
 
-	public Text[] chipAmountText = new Text[3];
-	public Text[] betAmountText = new Text[3];
+	public Text[] chipAmountText;
+	public Text[] betAmountText;
 
-	int currentSmallBlindPos = 0;
+	public int currentSmallBlindPos;
 
 	int currentBigBlindPos; 
 	int smallBlind = 1;
@@ -19,17 +19,73 @@ public class BettingTextDisplay : MonoBehaviour {
 
 	public static int currentMinRaise;
 
-	public static List<int> activePlayerPosList;
+	public static List<int> activePlayerList;
+	public static List<int> activePlayerPosList = new List<int>();
+
+	//this is a constant
+	private List<int> allPlayerPosList = new List<int>(){0,1,2,3,4,5,6,7,8};
+
+	public int myPlayerNumber;
 
 	// Use this for initialization
 	void Start () {
 
-		int playerPos = 5;
-		GameObject asdf = GameObject.Find ("chipAmount"+playerPos);
-		asdf.SetActive (false);
+		//THE LIST OF ACTIVE PLAYERS (TO BE RETRIEVED FROM SERVER). This is used to create the active player position list
+		activePlayerList = new List<int>(){myPlayerNumber,3,6,7,5};
 
-		//USE THE ACTIVE PLAYER POSITIONS LIST TO FIND BIG BLIND POSITION
-		currentBigBlindPos = currentSmallBlindPos + 1;
+		//putting players in position with myPlayerNumber at position 0
+		//make sure my player number goes into position 0. My position + 2 goes to position 2,
+		//My position - 3 goes to position allPlayerPosList.Count - 3
+		foreach (int activePlayerNumber in activePlayerList)
+		{
+			if (activePlayerNumber >= myPlayerNumber) {
+
+				activePlayerPosList.Add (activePlayerNumber - myPlayerNumber);  // + (activePlayer-myPlayerNumber) 
+			
+			} else {
+			
+				activePlayerPosList.Add (allPlayerPosList.Count - (myPlayerNumber - activePlayerNumber));
+			
+			}
+		}
+
+		//sort the active player position list so that players go in correct order	
+		activePlayerPosList.Sort ();
+
+		//remove active player positions from inactivePlayerPosList
+		var inactivePlayerPosList = allPlayerPosList;
+		foreach (int activePlayerPos in activePlayerPosList) {
+
+			inactivePlayerPosList.Remove (activePlayerPos);
+		}
+
+		//inactivate the bet/chip amounts and cards for inactive player positions
+		GameObject inactiveObject = new GameObject();
+		foreach (int inactivePlayerPos in inactivePlayerPosList) {
+
+			inactiveObject = GameObject.Find ("chipAmount"+inactivePlayerPos);
+			inactiveObject.SetActive (false);
+
+			inactiveObject = GameObject.Find ("betAmount"+inactivePlayerPos);
+			inactiveObject.SetActive (false);
+
+			inactiveObject = GameObject.Find ("Card0-"+inactivePlayerPos);
+			inactiveObject.SetActive (false);
+
+			inactiveObject = GameObject.Find ("Card1-"+inactivePlayerPos);
+			inactiveObject.SetActive (false);
+		}
+
+
+		//find big blind position
+		if (activePlayerPosList.IndexOf (currentSmallBlindPos) == activePlayerPosList.Count - 1) {
+
+			currentBigBlindPos = activePlayerPosList[0];
+
+		} else {
+			
+			currentBigBlindPos = activePlayerPosList [activePlayerPosList.IndexOf (currentSmallBlindPos) + 1];
+		}
 
 		//small blind chip and bet amounts
 		chipAmountText [currentSmallBlindPos].text = (int.Parse(chipAmountText[currentSmallBlindPos].text) - smallBlind).ToString();
@@ -42,9 +98,17 @@ public class BettingTextDisplay : MonoBehaviour {
 		//previous player was big blind
 		previousPlayerPos = currentBigBlindPos;
 
-		//USE THE ACTIVE PLAYER POSITIONS LIST TO FIND CURRENT PLAYER POSITION
-		currentPlayerPos = previousPlayerPos + 1;
+		//find the current player position
+		if (activePlayerPosList.IndexOf (previousPlayerPos) == activePlayerPosList.Count - 1) {
 
+			currentPlayerPos = activePlayerPosList [0];
+
+		} else {
+
+			currentPlayerPos = activePlayerPosList [activePlayerPosList.IndexOf (previousPlayerPos) + 1];
+		}
+
+		//the minimum raise at beginning of game is the big blind
 		currentMinRaise = 2 * smallBlind;
 
 	}
