@@ -54,6 +54,12 @@ public class FoldButtonAction : MonoBehaviour {
 		//FOLDED PLAYER POS LIST: IS THIS NEEDED?
 		BettingTextDisplay.foldedPlayerPosList.Add(foldedPlayerPos);
 
+		if (BettingTextDisplay.activePlayerPosList.Count == 1) {
+		
+			print ("winner");
+			//CURRENT PLAYER POSITION'S CHIP AMOUNT = CHIP AMOUNT + BET AMOUNT + POT AMOUNT
+		}
+
 		CheckBetEquality.CheckIfBetsAreEqual ();
 
 	}

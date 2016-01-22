@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class CheckBetEquality : MonoBehaviour {
+
+	//all bet amounts combined
+	static int totalBetsAmount;
 
 	public static void CheckIfBetsAreEqual()
 	{
@@ -11,9 +15,6 @@ public class CheckBetEquality : MonoBehaviour {
 
 		//the bet amount of each person
 		int betAmount = 0;
-
-		//all bet amounts combined
-		int totalBetsAmount;
 
 		bool betsAreEqual = false;
 
@@ -36,13 +37,32 @@ public class CheckBetEquality : MonoBehaviour {
 			
 			totalBetsAmount = betAmount * BettingTextDisplay.activePlayerPosList.Count;
 
-			//add all bets to pot
-			BettingTextDisplay.potAmountText.text = (int.Parse (BettingTextDisplay.potAmountText.text) + totalBetsAmount).ToString (); 
+			GameObject cbeObject = GameObject.Find ("CheckBetEquality");
+			CheckBetEquality cbe = cbeObject.GetComponent<CheckBetEquality> ();
 
-			//ANIMATE THE BETS TO THE POT?? NEW BET AMOUNT TEXTS MUST BE 0
-
-			print("moved bets to pot " +totalBetsAmount);
+			cbe.Invoke ("MoveBetsToPot", 2f);
 		}
 	
 	}
+
+	public void MoveBetsToPot()
+	{
+		//get the game object for chip and bet texts, get the BettingTextDisplay component to use betAmountText and chipAmountText
+		GameObject textGameObject = GameObject.Find ("Chip and Bet Amount Texts");
+		BettingTextDisplay btd = textGameObject.GetComponent<BettingTextDisplay> ();
+
+		//add all bets to pot
+		BettingTextDisplay.potAmountText.text = (int.Parse (BettingTextDisplay.potAmountText.text) + totalBetsAmount).ToString (); 
+
+		//removing bet amount texts from table bets go into pot
+		for (var i = 0; i < BettingTextDisplay.activePlayerPosList.Count; i++) {
+
+			btd.betAmountText [BettingTextDisplay.activePlayerPosList [i]].text = "";
+		}
+
+		//ANIMATE THE BETS TO THE POT?? NEW BET AMOUNT TEXTS MUST BE 0
+
+		print("moved bets to pot " +totalBetsAmount);
+	}
+
 }
