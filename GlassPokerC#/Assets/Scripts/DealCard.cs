@@ -18,7 +18,7 @@ public class DealCard : MonoBehaviour {
 		// Move our position a step closer to the target.
 		transform.position = Vector3.Lerp(transform.position, target.position, step);
 
-		transform.rotation = Quaternion.Slerp(transform.rotation, target.rotation, step);
+		//transform.rotation = Quaternion.Slerp(transform.rotation, target.rotation, step);
 	}
 
 	// Use this for initialization

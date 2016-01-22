@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CheckBetEquality : MonoBehaviour {
 
 	//all bet amounts combined
 	static int totalBetsAmount;
+
+//	public GameObject card;
+//	public GameObject target;
 
 	public static void CheckIfBetsAreEqual()
 	{
@@ -61,9 +65,14 @@ public class CheckBetEquality : MonoBehaviour {
 			btd.betAmountText [BettingTextDisplay.activePlayerPosList [i]].text = "";
 		}
 
-		//ANIMATE THE BETS TO THE POT?? NEW BET AMOUNT TEXTS MUST BE 0
-
+		//ANIMATE THE BETS TO THE POT??
 		print("moved bets to pot " +totalBetsAmount);
+
+		GameObject flopObject = GameObject.Find("FlopDeal");
+		FlopDeal fd = flopObject.GetComponent<FlopDeal>();
+
+		fd.Flop ();
+
 	}
 
 }
