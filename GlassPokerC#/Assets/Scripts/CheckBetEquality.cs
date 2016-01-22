@@ -33,6 +33,7 @@ public class CheckBetEquality : MonoBehaviour {
 			}
 		}
 
+		//if bets are all equal, move the bets to pot
 		if (betsAreEqual) {
 			
 			totalBetsAmount = betAmount * BettingTextDisplay.activePlayerPosList.Count;

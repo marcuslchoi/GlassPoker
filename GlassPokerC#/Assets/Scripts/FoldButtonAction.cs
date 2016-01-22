@@ -48,6 +48,7 @@ public class FoldButtonAction : MonoBehaviour {
 			BettingTextDisplay.currentPlayerPos = BettingTextDisplay.activePlayerPosList[BettingTextDisplay.activePlayerPosList.IndexOf(foldedPlayerPos) + 1];
 		}
 
+
 		//remove current player pos from active player pos list
 		BettingTextDisplay.activePlayerPosList.Remove(foldedPlayerPos);
 

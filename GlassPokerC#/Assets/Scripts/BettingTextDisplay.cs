@@ -43,6 +43,9 @@ public class BettingTextDisplay : MonoBehaviour {
 		//THE LIST OF ACTIVE PLAYERS (TO BE RETRIEVED FROM SERVER). This is used to create the active player position list
 		activePlayerList = new List<int>(){myPlayerNumber,3,4,7,5,8,0};
 
+		//sort the active player list so that players go in correct order	
+		activePlayerList.Sort ();
+
 		//putting players in position with myPlayerNumber at position 0
 		//make sure my player number goes into position 0. My position + 2 goes to position 2,
 		//My position - 3 goes to position allPlayerPosList.Count - 3
@@ -58,9 +61,8 @@ public class BettingTextDisplay : MonoBehaviour {
 			
 			}
 		}
-
-		//sort the active player position list so that players go in correct order	
-		activePlayerPosList.Sort ();
+			
+		//activePlayerPosList.Sort ();
 
 		//remove active player positions from inactivePlayerPosList
 		var inactivePlayerPosList = allPlayerPosList;
