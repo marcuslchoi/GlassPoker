@@ -7,7 +7,13 @@ public class FlopDeal : MonoBehaviour {
 	//public float speed;
 	//public int[] orders;
 
+	public Material material;
+
 	public GameObject[] targets;
+
+	public Texture2D texture;
+
+	//public Renderer rend;
 
 	public void Flop()
 	{
@@ -37,7 +43,7 @@ public class FlopDeal : MonoBehaviour {
 			//time between moving each card
 			//yield return new WaitForSeconds (timeBetweenCards);
 		}
-
+			
 		//rotate the cards
 		for (var i = 0; i < cards.Length; i++) {
 
@@ -47,11 +53,24 @@ public class FlopDeal : MonoBehaviour {
 
 				cards[i].transform.Rotate(Vector3.forward*5, Space.World);
 
+				//changing the material of the card to card face once it is rotated to 90deg
+				if (cards[i].transform.rotation.eulerAngles.z >= 90f) {
+
+					//CHANGE THE MATERIAL
+					GameObject cardObject = GameObject.Find("CardFlop"+i);
+					Renderer cardRend = cardObject.GetComponent<Renderer>();
+					cardRend.enabled = true;
+
+					material.mainTexture = texture;
+					cardRend.sharedMaterial = material;
+				}
+
+				//PUT THE FINAL ROTATED POSITION HERE
 
 				yield return null;
 
 			}
-			cards [i].transform.position = targets [i].transform.position;
+
 
 			//time between moving each card
 			//yield return new WaitForSeconds (timeBetweenCards);
