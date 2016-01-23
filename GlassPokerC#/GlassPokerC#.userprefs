@@ -1,14 +1,8 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/BettingTextDisplay.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/FlopDeal.cs">
     <Files>
-      <File FileName="Assets/Scripts/CallButtonAction.cs" Line="27" Column="3" />
-      <File FileName="Assets/Scripts/ConfirmBetButton.cs" Line="32" Column="49" />
-      <File FileName="Assets/Scripts/BetSliderAction.cs" Line="25" Column="51" />
-      <File FileName="Assets/Scripts/BetButtonAction.cs" Line="44" Column="38" />
-      <File FileName="Assets/Scripts/BettingTextDisplay.cs" Line="33" Column="21" />
-      <File FileName="Assets/Scripts/Hand.cs" Line="54" Column="41" />
-      <File FileName="Assets/Scripts/DealCard.cs" Line="10" Column="2" />
+      <File FileName="Assets/Scripts/FlopDeal.cs" Line="42" Column="95" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

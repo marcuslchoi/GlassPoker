@@ -3,65 +3,59 @@ using System.Collections;
 
 public class FlopDeal : MonoBehaviour {
 
-	public GameObject card;
+	public GameObject[] cards;
 	//public float speed;
 	//public int[] orders;
 
-	public GameObject target;
+	public GameObject[] targets;
 
 	public void Flop()
 	{
-		print ("flop called");
-		// The step size is equal to speed times frame time.
-//		var step = speed * Time.deltaTime;
-//
-//		for (var i = 0; i < cards.Length; i++) {
-//			
-//			// Move our position a step closer to the target.
-//			cards[i].transform.position = Vector3.Lerp (cards[i].transform.position, targets[i].position, step);
-//
-//		}
-		//transform.rotation = Quaternion.Slerp(transform.rotation, target.rotation, step);
-	
-//		GameObject cardObject = GameObject.Find ("Sphere");
-//		Vector3 cardv3 = cardObject.transform.position;
 
-		//GameObject targetObject = GameObject.Find ("TargetFlop1");
-		Vector3 targetv3 = target.transform.position;
+		StartCoroutine(MoveCards (cards[0].transform.position, targets[0].transform.position, 0.2f, 0));
 
-//		GameObject flopDealObject = GameObject.Find ("FlopDeal");
-//		FlopDeal fd = flopDealObject.GetComponent<FlopDeal> ();
+		//StartCoroutine(MoveObject (cards[1].transform.position, targets[1].transform.position, 0.5f, 1));
 
-		GameObject card2 = GameObject.Find ("CardFlop2");
-		Vector3 target2v3 = GameObject.Find ("TargetFlop2").transform.position;
-
-		StartCoroutine(MoveObject (card.transform.position, targetv3, 1f));
-
-		StartCoroutine(MoveObject (card2.transform.position, target2v3, 1f));
-
-		//StartCoroutine(MoveObject (card3.transform.position, target3v3, 1f));
+		//StartCoroutine(MoveObject (cards[2].transform.position, targets[2].transform.position, 0.5f, 2));
 
 	}
 
-	void Start()
-	{
-		//Flop();
-	}
-
-
-
-	IEnumerator MoveObject(Vector3 sourcev3, Vector3 targetv3, float overTime)
+	IEnumerator MoveCards(Vector3 sourcev3, Vector3 targetv3, float overTime, int i)
 	{
 
-		print ("move object called");
 		float startTime = Time.time;
 
 		while(Time.time < startTime + overTime)
 		{
-			card.transform.position = Vector3.Lerp(sourcev3, targetv3, (Time.time - startTime)/overTime);
+			cards[i].transform.position = Vector3.Lerp(sourcev3, targetv3, (Time.time - startTime)/overTime);
 			yield return null;
 			
 		}
-			card.transform.position = targetv3;
+		cards[i].transform.position = targetv3;
+
+		yield return new WaitForSeconds (0.1f);
+
+		startTime = Time.time;
+
+		while(Time.time < startTime + overTime)
+		{
+			cards[1].transform.position = Vector3.Lerp(cards[1].transform.position, targets[1].transform.position, (Time.time - startTime)/overTime);
+			yield return null;
+
+		}
+		cards[1].transform.position = targets[1].transform.position;
+
+		yield return new WaitForSeconds (0.1f);
+
+		startTime = Time.time;
+
+		while(Time.time < startTime + overTime)
+		{
+			cards[2].transform.position = Vector3.Lerp(cards[2].transform.position, targets[2].transform.position, (Time.time - startTime)/overTime);
+			yield return null;
+
+		}
+		cards[2].transform.position = targets[2].transform.position;
+
 	}
 }
