@@ -28,7 +28,7 @@ public class BettingTextDisplay : MonoBehaviour {
 	//this is a constant
 	private List<int> allPlayerPosList = new List<int>(){0,1,2,3,4,5,6,7,8};
 
-	public int myPlayerNumber;
+	//public int myPlayerNumber;
 
 	// Use this for initialization
 	void Start () {
@@ -36,15 +36,23 @@ public class BettingTextDisplay : MonoBehaviour {
 		//DO ALL THIS IN A DIFFERENT FUNCTION THAT GETS CALLED EVERY NEW GAME??
 		//USE THE FOLDED PLAYER POS LIST??
 
+		var myPlayerNumber = Player.myPlayerNumber;
+
 		GameObject potAmntTextObject = new GameObject ();
 		potAmntTextObject = GameObject.Find ("potAmountText");
 		potAmountText = potAmntTextObject.GetComponent<Text>();
 
 		//THE LIST OF ACTIVE PLAYERS (TO BE RETRIEVED FROM SERVER). This is used to create the active player position list
-		activePlayerList = new List<int>(){myPlayerNumber,3,4,7,5,8,0};
+		activePlayerList = new List<int>(){0,1,2,3,4,5,6,7,8};//{1,0}; // {myPlayerNumber,3,4,7,5,8,0};
+
+		//PUT THESE ALL IN FUNCTION THAT GETS CALLED IE ON BUTTON PRESS OF "DEAL"
+
+		//activePlayerList.Add (myPlayerNumber);
 
 		//sort the active player list so that players go in correct order and active player position list matches it	
 		activePlayerList.Sort ();
+
+		//THIS MUST BE CREATED AFTER THE PLAYER ENTERS!!!!
 
 		//putting players in position with myPlayerNumber at position 0
 		//make sure my player number goes into position 0. My position + 2 goes to position 2,
@@ -60,6 +68,10 @@ public class BettingTextDisplay : MonoBehaviour {
 				activePlayerPosList.Add (allPlayerPosList.Count - (myPlayerNumber - activePlayerNumber));
 			
 			}
+		}
+
+		foreach (int activePlayerPos in activePlayerPosList) {
+			print (activePlayerPos);
 		}
 
 //		//remove active player positions from inactivePlayerPosList
@@ -126,10 +138,5 @@ public class BettingTextDisplay : MonoBehaviour {
 
 	}
 	
-	// Update is called once per frame
-	void Update () {
 
-
-
-	}
 }

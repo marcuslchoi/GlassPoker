@@ -15,3 +15,5 @@
 /Users/stevenmyers/Documents/GlassPokerC#/Temp/bin/Debug/Unity.CecilTools.dll
 /Users/stevenmyers/Documents/GlassPokerC#/Temp/bin/Debug/Mono.Cecil.Pdb.dll
 /Users/stevenmyers/Documents/GlassPokerC#/Temp/bin/Debug/Mono.Cecil.Mdb.dll
+/Users/stevenmyers/Documents/GlassPokerC#/Temp/bin/Debug/Assembly-CSharp-firstpass.dll
+/Users/stevenmyers/Documents/GlassPokerC#/Temp/bin/Debug/Assembly-CSharp-firstpass.dll.mdb
