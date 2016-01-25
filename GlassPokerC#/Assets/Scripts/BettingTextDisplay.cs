@@ -43,7 +43,7 @@ public class BettingTextDisplay : MonoBehaviour {
 		//THE LIST OF ACTIVE PLAYERS (TO BE RETRIEVED FROM SERVER). This is used to create the active player position list
 		activePlayerList = new List<int>(){myPlayerNumber,3,4,7,5,8,0};
 
-		//sort the active player list so that players go in correct order	
+		//sort the active player list so that players go in correct order and active player position list matches it	
 		activePlayerList.Sort ();
 
 		//putting players in position with myPlayerNumber at position 0
@@ -61,34 +61,35 @@ public class BettingTextDisplay : MonoBehaviour {
 			
 			}
 		}
+
+//		//remove active player positions from inactivePlayerPosList
+//		var inactivePlayerPosList = allPlayerPosList;
+//		foreach (int activePlayerPos in activePlayerPosList) {
+//
+//			inactivePlayerPosList.Remove (activePlayerPos);
+//		}
+
+		//inactivate player positions that are not in active player positions list
+		GameObject playerObject = new GameObject();
+		foreach (int playerPos in allPlayerPosList) {
+
+			if (!activePlayerPosList.Contains (playerPos)) {
+				
+				playerObject = GameObject.Find ("chipAmount" + playerPos);
+				playerObject.SetActive (false);
+
+				playerObject = GameObject.Find ("betAmount" + playerPos);
+				playerObject.SetActive (false);
+
+				playerObject = GameObject.Find ("Card0-" + playerPos);
+				playerObject.SetActive (false);
+
+				playerObject = GameObject.Find ("Card1-" + playerPos);
+				playerObject.SetActive (false);
+
+			}
+		}
 			
-		//activePlayerPosList.Sort ();
-
-		//remove active player positions from inactivePlayerPosList
-		var inactivePlayerPosList = allPlayerPosList;
-		foreach (int activePlayerPos in activePlayerPosList) {
-
-			inactivePlayerPosList.Remove (activePlayerPos);
-		}
-
-		//inactivate the bet/chip amounts and cards for inactive player positions
-		GameObject inactiveObject = new GameObject();
-		foreach (int inactivePlayerPos in inactivePlayerPosList) {
-
-			inactiveObject = GameObject.Find ("chipAmount"+inactivePlayerPos);
-			inactiveObject.SetActive (false);
-
-			inactiveObject = GameObject.Find ("betAmount"+inactivePlayerPos);
-			inactiveObject.SetActive (false);
-
-			inactiveObject = GameObject.Find ("Card0-"+inactivePlayerPos);
-			inactiveObject.SetActive (false);
-
-			inactiveObject = GameObject.Find ("Card1-"+inactivePlayerPos);
-			inactiveObject.SetActive (false);
-		}
-
-
 		//find big blind position
 		if (activePlayerPosList.IndexOf (currentSmallBlindPos) == activePlayerPosList.Count - 1) {
 
