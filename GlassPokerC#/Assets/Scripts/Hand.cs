@@ -681,7 +681,7 @@ public class Hand : MonoBehaviour {
 	void Update () {
 
 		if (Input.GetKeyDown (KeyCode.UpArrow)) {
-			print ("up arrow");
+			//print ("up arrow");
 		}
 	
 	}

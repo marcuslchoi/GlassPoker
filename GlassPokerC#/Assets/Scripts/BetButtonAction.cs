@@ -23,10 +23,10 @@ public class BetButtonAction : MonoBehaviour {
 		BettingTextDisplay btd = textGameObject.GetComponent<BettingTextDisplay> ();
 
 		//slider min value is minimum raise plus previous player bet amount
-		betSlider.minValue = BettingTextDisplay.currentMinRaise + int.Parse(btd.betAmountText [BettingTextDisplay.previousPlayerPos].text);
+		betSlider.minValue = BettingTextDisplay.currentMinRaise + int.Parse(btd.betAmountText [btd.previousPlayerPos].text);
 
 		//slider max value is current player's total chips (chip amount plus bet amount before raise)
-		int possibleMaxValue = int.Parse(btd.chipAmountText [BettingTextDisplay.currentPlayerPos].text) + int.Parse(btd.betAmountText [BettingTextDisplay.currentPlayerPos].text);
+		int possibleMaxValue = int.Parse(btd.chipAmountText [btd.currentPlayerPos].text) + int.Parse(btd.betAmountText [btd.currentPlayerPos].text);
 
 		//check if min value exceeds my total chips. If so, All in.
 		if (betSlider.minValue >= possibleMaxValue) {
