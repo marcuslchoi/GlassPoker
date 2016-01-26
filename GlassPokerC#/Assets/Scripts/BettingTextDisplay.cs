@@ -42,56 +42,20 @@ public class BettingTextDisplay : MonoBehaviour {
 		GameObject potAmntTextObject = new GameObject ();
 		potAmntTextObject = GameObject.Find ("potAmountText");
 		potAmountText = potAmntTextObject.GetComponent<Text>();
-//
-//		//THE LIST OF ACTIVE PLAYERS (TO BE RETRIEVED FROM SERVER). This is used to create the active player position list
-//		activePlayerList = new List<int>(){0,1,2,3,4,5,6,7,8};//{1,0}; // {myPlayerNumber,3,4,7,5,8,0};
-//
-//		//PUT THESE ALL IN FUNCTION THAT GETS CALLED IE ON BUTTON PRESS OF "DEAL"
-//
-//		//activePlayerList.Add (myPlayerNumber);
-//
-//		//sort the active player list so that players go in correct order and active player position list matches it	
-//		activePlayerList.Sort ();
-//
-//		//THIS MUST BE CREATED AFTER THE PLAYER ENTERS!!!!
-//
-//		//putting players in position with myPlayerNumber at position 0
-//		//make sure my player number goes into position 0. My position + 2 goes to position 2,
-//		//My position - 3 goes to position allPlayerPosList.Count - 3
-//		foreach (int activePlayerNumber in activePlayerList)
-//		{
-//			if (activePlayerNumber >= myPlayerNumber) {
-//
-//				activePlayerPosList.Add (activePlayerNumber - myPlayerNumber); 
-//			
-//			} else {
-//			
-//				activePlayerPosList.Add (allPlayerPosList.Count - (myPlayerNumber - activePlayerNumber));
-//			
-//			}
-//		}
-//
-//		foreach (int activePlayerPos in activePlayerPosList) {
-//			print ("a p p "+activePlayerPos);
-//		}
+
+
 		GameObject playerObj = GameObject.Find("Player(Clone)");
 		Player player = playerObj.GetComponent<Player> ();
 
 		int myPlayerNumber = player.myPlayerNumber;
+
+		print ("my player number called in bet text disp: " + myPlayerNumber);
 
 		Player myPlayer = GameObject.FindWithTag (myPlayerNumber.ToString ()).GetComponent<Player> ();
 	
 		myPlayer.GeneratePlayerPosList ();
 		//place each player in position based on their player number and associated active player position list
 		myPlayer.PlacePlayersInPosition ();
-
-
-//		//remove active player positions from inactivePlayerPosList
-//		var inactivePlayerPosList = allPlayerPosList;
-//		foreach (int activePlayerPos in activePlayerPosList) {
-//
-//			inactivePlayerPosList.Remove (activePlayerPos);
-//		}
 
 		//inactivate player positions that are not in active player positions list
 		GameObject playerObject = new GameObject();
