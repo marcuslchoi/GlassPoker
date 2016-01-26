@@ -14,13 +14,13 @@ public class BettingTextDisplay : MonoBehaviour {
 	int currentBigBlindPos; 
 	int smallBlind = 1;
 
-	public int currentPlayerPos;
-	public int previousPlayerPos;
+	public static int currentPlayerPos;
+	public static int previousPlayerPos;
 
 	public static int currentMinRaise;
 
 	public static List<int> activePlayerList;
-	public List<int> activePlayerPosList = new List<int>();
+	public static List<int> activePlayerPosList = new List<int>();
 
 	//public List<int> foldedPlayerPosList = new List<int>();
 
@@ -38,10 +38,10 @@ public class BettingTextDisplay : MonoBehaviour {
 		//this is different for each player
 //		var myPlayerNumber = Player.myPlayerNumber;
 //
-		//IS THIS NEEDED HERE??
-//		GameObject potAmntTextObject = new GameObject ();
-//		potAmntTextObject = GameObject.Find ("potAmountText");
-//		potAmountText = potAmntTextObject.GetComponent<Text>();
+		//assign the pot amount text object
+		GameObject potAmntTextObject = new GameObject ();
+		potAmntTextObject = GameObject.Find ("potAmountText");
+		potAmountText = potAmntTextObject.GetComponent<Text>();
 //
 //		//THE LIST OF ACTIVE PLAYERS (TO BE RETRIEVED FROM SERVER). This is used to create the active player position list
 //		activePlayerList = new List<int>(){0,1,2,3,4,5,6,7,8};//{1,0}; // {myPlayerNumber,3,4,7,5,8,0};

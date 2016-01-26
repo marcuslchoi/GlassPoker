@@ -19,15 +19,15 @@ public class CheckBetEquality : MonoBehaviour {
 		bool betsAreEqual = false;
 
 		//check if all bets are equal. If so, move bets to pot and begin next round or showdown
-		for (var i = 0; i < btd.activePlayerPosList.Count-1; i++) {
+		for (var i = 0; i < BettingTextDisplay.activePlayerPosList.Count-1; i++) {
 
-			if (btd.betAmountText [btd.activePlayerPosList[i]].text != btd.betAmountText [btd.activePlayerPosList[i + 1]].text) {
+			if (btd.betAmountText [BettingTextDisplay.activePlayerPosList[i]].text != btd.betAmountText [BettingTextDisplay.activePlayerPosList[i + 1]].text) {
 			
 				break;
 			
-			} else if (i == btd.activePlayerPosList.Count - 2) {
+			} else if (i == BettingTextDisplay.activePlayerPosList.Count - 2) {
 				
-				betAmount = int.Parse(btd.betAmountText[btd.activePlayerPosList[i]].text);
+				betAmount = int.Parse(btd.betAmountText[BettingTextDisplay.activePlayerPosList[i]].text);
 
 				betsAreEqual = true;
 			}
@@ -36,7 +36,7 @@ public class CheckBetEquality : MonoBehaviour {
 		//if bets are all equal, move the bets to pot
 		if (betsAreEqual) {
 			
-			totalBetsAmount = betAmount * btd.activePlayerPosList.Count;
+			totalBetsAmount = betAmount * BettingTextDisplay.activePlayerPosList.Count;
 
 			GameObject cbeObject = GameObject.Find ("CheckBetEquality");
 			CheckBetEquality cbe = cbeObject.GetComponent<CheckBetEquality> ();
@@ -54,9 +54,9 @@ public class CheckBetEquality : MonoBehaviour {
 		BettingTextDisplay.potAmountText.text = (int.Parse (BettingTextDisplay.potAmountText.text) + totalBetsAmount).ToString (); 
 
 		//removing bet amount texts from table bets go into pot
-		for (var i = 0; i < btd.activePlayerPosList.Count; i++) {
+		for (var i = 0; i < BettingTextDisplay.activePlayerPosList.Count; i++) {
 
-			btd.betAmountText [btd.activePlayerPosList [i]].text = "";
+			btd.betAmountText [BettingTextDisplay.activePlayerPosList [i]].text = "";
 		}
 
 		//ANIMATE THE BETS TO THE POT??

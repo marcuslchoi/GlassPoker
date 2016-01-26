@@ -16,8 +16,8 @@ public class ConfirmBetButton : MonoBehaviour {
 		GameObject sliderObject = GameObject.Find ("BetSlider");
 		Slider betSlider = sliderObject.GetComponent<Slider> ();
 
-		var currentPlayerPos = btd.currentPlayerPos;
-		var previousPlayerPos = btd.previousPlayerPos;
+		var currentPlayerPos = BettingTextDisplay.currentPlayerPos;
+		var previousPlayerPos = BettingTextDisplay.previousPlayerPos;
 		var betSliderValInt = (int)betSlider.value;
 
 		//new current minimum raise is the new bet amount (slider value) - previous player's bet amount
@@ -30,17 +30,17 @@ public class ConfirmBetButton : MonoBehaviour {
 		btd.betAmountText [currentPlayerPos].text = betSliderValInt.ToString();
 
 		//assign current player (before incrementing) to previous player
-		btd.previousPlayerPos = btd.currentPlayerPos;
+		BettingTextDisplay.previousPlayerPos = BettingTextDisplay.currentPlayerPos;
 
 		//finding the new current player position based on active player position list (COPIED FROM CALLBUTTONACTION SCRIPT)
-		if (btd.activePlayerPosList.IndexOf(btd.previousPlayerPos) == btd.activePlayerPosList.Count-1) {
+		if (BettingTextDisplay.activePlayerPosList.IndexOf(BettingTextDisplay.previousPlayerPos) == BettingTextDisplay.activePlayerPosList.Count-1) {
 
-			btd.currentPlayerPos = btd.activePlayerPosList[0];
+			BettingTextDisplay.currentPlayerPos = BettingTextDisplay.activePlayerPosList[0];
 
 
 		} else {
 
-			btd.currentPlayerPos = btd.activePlayerPosList[btd.activePlayerPosList.IndexOf(btd.previousPlayerPos) + 1];
+			BettingTextDisplay.currentPlayerPos = BettingTextDisplay.activePlayerPosList[BettingTextDisplay.activePlayerPosList.IndexOf(BettingTextDisplay.previousPlayerPos) + 1];
 		}
 
 		//hide slider, slider text, confirm button
