@@ -36,7 +36,7 @@ public class Player : NetworkBehaviour {
 
 	public void GeneratePlayerPosList ()
 	{
-		BettingTextDisplay btd = GameObject.Find ("Chip and Bet Amount Texts").GetComponent<BettingTextDisplay> ();
+		//BettingTextDisplay btd = GameObject.Find ("Chip and Bet Amount Texts").GetComponent<BettingTextDisplay> ();
 
 		//THE LIST OF ACTIVE PLAYERS (TO BE RETRIEVED FROM SERVER). This is used to create the active player position list
 		BettingTextDisplay.activePlayerList = new List<int>(){0,1,2,3,4,5,6,7,8}; //playerNumbers; //{1,0}; // {myPlayerNumber,3,4,7,5,8,0};
@@ -67,7 +67,7 @@ public class Player : NetworkBehaviour {
 	//SHOULD THIS BE STATIC?? IT PLACES PLAYERS IN POSITION BUT USES ACTIVE PLAYER POS LIST, DIFF FOR EACH DEVICE
 	public void PlacePlayersInPosition() {
 
-		BettingTextDisplay btd = GameObject.Find ("Chip and Bet Amount Texts").GetComponent<BettingTextDisplay> ();
+		//BettingTextDisplay btd = GameObject.Find ("Chip and Bet Amount Texts").GetComponent<BettingTextDisplay> ();
 
 		//puts each player in their position
 		for (var i = 0; i < playerNumbers.Count; i++)
@@ -87,8 +87,7 @@ public class Player : NetworkBehaviour {
 		}
 
 	}
-
-
+		
 
 
 	// Update is called once per frame
@@ -109,5 +108,8 @@ public class Player : NetworkBehaviour {
 		//First, set the default camera component of Camera child object to disabled (in inspector). 
 		//This line enables it only for local player
 		//GetComponentInChildren<Camera> ().enabled = true;
+
+		//make my player red
+		GetComponent<MeshRenderer>().material.color = Color.red;
 	}
 }
