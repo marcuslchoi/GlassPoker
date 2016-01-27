@@ -20,7 +20,8 @@ public class BettingTextDisplay : NetworkBehaviour {
 
 	public static int currentMinRaise;
 
-	public static List<int> activePlayerList;
+	//get this from Player.playerNumbers
+	public static List<int> activePlayerList = new List<int>(){0,1,2,3,4,5,6,7,8};
 	public static List<int> activePlayerPosList = new List<int>();
 
 	//public List<int> foldedPlayerPosList = new List<int>();

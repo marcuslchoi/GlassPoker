@@ -19,6 +19,8 @@ public class Player : NetworkBehaviour {
 	//this is a constant (needed in betting text display also????)
 	private List<int> allPlayerPosList = new List<int>(){0,1,2,3,4,5,6,7,8};
 
+	List<int> testPosList = new List<int>();
+
 	void Start () {
 
 		players++;
@@ -33,7 +35,7 @@ public class Player : NetworkBehaviour {
 		playerNumbers.Add (myPlayerNumber);
 
 		RpcGeneratePlayerPosList ();
-		//PlacePlayersInPosition ();
+		RpcPlacePlayersInPosition ();
 
 	}
 
@@ -43,10 +45,12 @@ public class Player : NetworkBehaviour {
 		//BettingTextDisplay btd = GameObject.Find ("Chip and Bet Amount Texts").GetComponent<BettingTextDisplay> ();
 
 		//THE LIST OF ACTIVE PLAYERS (TO BE RETRIEVED FROM SERVER). This is used to create the active player position list
-		BettingTextDisplay.activePlayerList = new List<int>(){0,1,2,3,4,5,6,7,8}; //playerNumbers; //{1,0}; // {myPlayerNumber,3,4,7,5,8,0};
+		//BettingTextDisplay.activePlayerList = new List<int>(){0,1,2,3,4,5,6,7,8}; //playerNumbers; //{1,0}; // {myPlayerNumber,3,4,7,5,8,0};
 
 		//sort the active player list so that players go in correct order and active player position list matches it	
 		BettingTextDisplay.activePlayerList.Sort ();
+
+
 
 
 		//THIS IS DIFFERENT ON EACH DEVICE DEPENDING ON THE PLAYER NUMBER
@@ -55,16 +59,22 @@ public class Player : NetworkBehaviour {
 			if (activePlayerNumber >= myPlayerNumber) {
 
 				BettingTextDisplay.activePlayerPosList.Add (activePlayerNumber - myPlayerNumber); 
+				testPosList.Add (activePlayerNumber - myPlayerNumber);
 
 			} else {
 
 				BettingTextDisplay.activePlayerPosList.Add (allPlayerPosList.Count - (myPlayerNumber - activePlayerNumber));
-
+				testPosList.Add (allPlayerPosList.Count - (myPlayerNumber - activePlayerNumber));
 			}
 		}
 
 		foreach (int activePlayerPos in BettingTextDisplay.activePlayerPosList) {
-			print ("a p p "+activePlayerPos);
+			//print ("a p p "+activePlayerPos);
+
+		}
+		foreach (int testPlayerPos in testPosList) {
+			print ("t a p p "+testPlayerPos);
+
 		}
 	}
 
@@ -72,6 +82,7 @@ public class Player : NetworkBehaviour {
 	[ClientRpc]
 	public void RpcPlacePlayersInPosition() {
 
+		print ("from place players in position: my player number: " + myPlayerNumber);
 		//BettingTextDisplay btd = GameObject.Find ("Chip and Bet Amount Texts").GetComponent<BettingTextDisplay> ();
 
 		//puts each player in their position
@@ -81,8 +92,10 @@ public class Player : NetworkBehaviour {
 			var indexOfPlayerNumber = BettingTextDisplay.activePlayerList.IndexOf (playerNumbers[i]);
 
 			//where I want the player to go at the table
-			GameObject playerPosTarget = GameObject.Find ("Target0-" + BettingTextDisplay.activePlayerPosList [indexOfPlayerNumber]);
+			//GameObject playerPosTarget = GameObject.Find ("Target0-" + BettingTextDisplay.activePlayerPosList [indexOfPlayerNumber]);
+			GameObject playerPosTarget = GameObject.Find ("Target0-" + testPosList [indexOfPlayerNumber]);
 
+		
 			//get the current player
 			GameObject playerObj = GameObject.FindWithTag(playerNumbers[i].ToString ());
 			Player player = playerObj.GetComponent<Player> ();
