@@ -32,12 +32,13 @@ public class Player : NetworkBehaviour {
 
 		playerNumbers.Add (myPlayerNumber);
 
-		GeneratePlayerPosList ();
+		RpcGeneratePlayerPosList ();
 		//PlacePlayersInPosition ();
 
 	}
 
-	public void GeneratePlayerPosList ()
+	[ClientRpc]
+	public void RpcGeneratePlayerPosList ()
 	{
 		//BettingTextDisplay btd = GameObject.Find ("Chip and Bet Amount Texts").GetComponent<BettingTextDisplay> ();
 
@@ -68,7 +69,8 @@ public class Player : NetworkBehaviour {
 	}
 
 	//SHOULD THIS BE STATIC?? IT PLACES PLAYERS IN POSITION BUT USES ACTIVE PLAYER POS LIST, DIFF FOR EACH DEVICE
-	public void PlacePlayersInPosition() {
+	[ClientRpc]
+	public void RpcPlacePlayersInPosition() {
 
 		//BettingTextDisplay btd = GameObject.Find ("Chip and Bet Amount Texts").GetComponent<BettingTextDisplay> ();
 
@@ -93,7 +95,7 @@ public class Player : NetworkBehaviour {
 		
 
 
-	// Update is called once per frame
+	// moves the local player on arrow key press
 	void Update () {
 
 		if (!isLocalPlayer) {

@@ -2,9 +2,10 @@
 using System.Collections;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using UnityEngine.Networking;
 //using System.Linq;
 
-public class BettingTextDisplay : MonoBehaviour {
+public class BettingTextDisplay : NetworkBehaviour {
 
 	public Text[] chipAmountText;
 	public Text[] betAmountText;
@@ -31,8 +32,8 @@ public class BettingTextDisplay : MonoBehaviour {
 
 	//public int myPlayerNumber;
 
-	// Use this for initialization
-	public void ActivatePlayers () {
+	[ClientRpc]
+	public void RpcActivatePlayers () {
 
 
 		//this is different for each player
@@ -56,9 +57,9 @@ public class BettingTextDisplay : MonoBehaviour {
 		//myPlayer.GeneratePlayerPosList ();
 
 		//place each player in position based on their player number and associated active player position list
-		myPlayer.PlacePlayersInPosition ();
+		myPlayer.RpcPlacePlayersInPosition ();
 
-		//inactivate player positions that are not in active player positions list
+		//de-activate player positions that are not in active player positions list
 		GameObject playerObject = new GameObject();
 		foreach (int playerPos in allPlayerPosList) {
 
