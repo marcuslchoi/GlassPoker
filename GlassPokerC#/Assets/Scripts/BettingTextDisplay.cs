@@ -53,7 +53,8 @@ public class BettingTextDisplay : MonoBehaviour {
 
 		Player myPlayer = GameObject.FindWithTag (myPlayerNumber.ToString ()).GetComponent<Player> ();
 	
-		myPlayer.GeneratePlayerPosList ();
+		//myPlayer.GeneratePlayerPosList ();
+
 		//place each player in position based on their player number and associated active player position list
 		myPlayer.PlacePlayersInPosition ();
 

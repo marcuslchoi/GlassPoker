@@ -28,9 +28,12 @@ public class Player : NetworkBehaviour {
 		//tag the player with their player number so can find with tag
 		gameObject.tag = myPlayerNumber.ToString();
 
+		print ("player number "+gameObject.tag);
+
 		playerNumbers.Add (myPlayerNumber);
 
-		print ("player number "+gameObject.tag);
+		GeneratePlayerPosList ();
+		//PlacePlayersInPosition ();
 
 	}
 
@@ -101,6 +104,7 @@ public class Player : NetworkBehaviour {
 		inputValue.z = CrossPlatformInputManager.GetAxis ("Vertical");
 
 		transform.Translate (inputValue);
+
 	}
 
 	public override void OnStartLocalPlayer() {
@@ -111,5 +115,6 @@ public class Player : NetworkBehaviour {
 
 		//make my player red
 		GetComponent<MeshRenderer>().material.color = Color.red;
+
 	}
 }
