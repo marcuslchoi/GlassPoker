@@ -109,6 +109,8 @@ public class BettingTextDisplay : MonoBehaviour {
 			currentPlayerPos = activePlayerPosList [activePlayerPosList.IndexOf (previousPlayerPos) + 1];
 		}
 
+		chipAmountText [currentPlayerPos].color = Color.yellow; 
+
 		//the minimum raise at beginning of game is the big blind
 		currentMinRaise = 2 * smallBlind;
 

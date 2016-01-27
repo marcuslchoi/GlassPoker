@@ -9,6 +9,9 @@ public class FoldButtonAction : MonoBehaviour {
 		GameObject textGameObject = GameObject.Find ("Chip and Bet Amount Texts");
 		BettingTextDisplay btd = textGameObject.GetComponent<BettingTextDisplay> ();
 
+		//make the folded player color red
+		btd.chipAmountText [BettingTextDisplay.currentPlayerPos].color = Color.red;
+
 		var foldedPlayerPos = BettingTextDisplay.currentPlayerPos;
 
 		print ("Fold player position "+BettingTextDisplay.currentPlayerPos);
@@ -48,6 +51,9 @@ public class FoldButtonAction : MonoBehaviour {
 			BettingTextDisplay.currentPlayerPos = BettingTextDisplay.activePlayerPosList[BettingTextDisplay.activePlayerPosList.IndexOf(foldedPlayerPos) + 1];
 		}
 
+
+		btd.chipAmountText [BettingTextDisplay.currentPlayerPos].color = Color.yellow;
+		btd.chipAmountText [BettingTextDisplay.previousPlayerPos].color = Color.black;
 
 		//remove current player pos from active player pos list
 		BettingTextDisplay.activePlayerPosList.Remove(foldedPlayerPos);

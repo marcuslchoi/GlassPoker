@@ -35,6 +35,9 @@ public class CallButtonAction : MonoBehaviour {
 			BettingTextDisplay.currentPlayerPos = BettingTextDisplay.activePlayerPosList[BettingTextDisplay.activePlayerPosList.IndexOf(BettingTextDisplay.previousPlayerPos) + 1];
 		}
 
+		btd.chipAmountText [BettingTextDisplay.currentPlayerPos].color = Color.yellow;
+		btd.chipAmountText [BettingTextDisplay.previousPlayerPos].color = Color.black;
+
 		CheckBetEquality.CheckIfBetsAreEqual ();
 	}
 }

@@ -35,7 +35,9 @@ public class CheckBetEquality : MonoBehaviour {
 
 		//if bets are all equal, move the bets to pot
 		if (betsAreEqual) {
-			
+
+			btd.chipAmountText [BettingTextDisplay.currentPlayerPos].color = Color.black;
+
 			totalBetsAmount = betAmount * BettingTextDisplay.activePlayerPosList.Count;
 
 			GameObject cbeObject = GameObject.Find ("CheckBetEquality");

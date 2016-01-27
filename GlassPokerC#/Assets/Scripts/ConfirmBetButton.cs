@@ -43,6 +43,9 @@ public class ConfirmBetButton : MonoBehaviour {
 			BettingTextDisplay.currentPlayerPos = BettingTextDisplay.activePlayerPosList[BettingTextDisplay.activePlayerPosList.IndexOf(BettingTextDisplay.previousPlayerPos) + 1];
 		}
 
+		btd.chipAmountText [BettingTextDisplay.currentPlayerPos].color = Color.yellow;
+		btd.chipAmountText [BettingTextDisplay.previousPlayerPos].color = Color.black;
+
 		//hide slider, slider text, confirm button
 		sliderObject.SetActive(false);
 		sliderValText.text = "";
