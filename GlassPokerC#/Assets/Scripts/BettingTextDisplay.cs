@@ -10,7 +10,7 @@ public class BettingTextDisplay : NetworkBehaviour {
 	public Text[] chipAmountText;
 	public Text[] betAmountText;
 
-	int currentSmallBlindPos = 1;
+	int currentSmallBlindPos;
 
 	int currentBigBlindPos; 
 	int smallBlind = 1;
@@ -22,6 +22,8 @@ public class BettingTextDisplay : NetworkBehaviour {
 
 	//get this from Player.playerNumbers
 	public static List<int> activePlayerList = new List<int>(){0,1,2,3,4,5,6,7,8};
+
+	//index of activePlayerPosList is the player number
 	public static List<int> activePlayerPosList = new List<int>();
 
 	//public List<int> foldedPlayerPosList = new List<int>();
@@ -33,27 +35,39 @@ public class BettingTextDisplay : NetworkBehaviour {
 
 	//public int myPlayerNumber;
 
-	//[ClientRpc]
-	public void ActivatePlayers () {
-
-
-		//this is different for each player
-//		var myPlayerNumber = Player.myPlayerNumber;
-//
+	void Start() {
+		
 		//assign the pot amount text object
 		GameObject potAmntTextObject = new GameObject ();
 		potAmntTextObject = GameObject.Find ("potAmountText");
 		potAmountText = potAmntTextObject.GetComponent<Text>();
 
+	}
+		
+	//de-activates non-active player positions, assigns small blind position, 
+	//current player position, previous player position, and current minimum raise
+	//[ClientRpc]
+	public void ActivatePlayers () {
 
-		GameObject playerObj = GameObject.Find("Player(Clone)");
-		Player player = playerObj.GetComponent<Player> ();
+		//List<int> testPosList = GameObject.Find ("Player").GetComponent<Player> ().testPosList;
 
-		int myPlayerNumber = player.myPlayerNumber;
+		//make current small blind the host player
+		currentSmallBlindPos = activePlayerPosList [Player.playerNumbers [0]];
 
-		print ("my player number called in bet text disp: " + myPlayerNumber);
+		//this is different for each player
+//		var myPlayerNumber = Player.myPlayerNumber;
 
-		Player myPlayer = GameObject.FindWithTag (myPlayerNumber.ToString ()).GetComponent<Player> ();
+
+
+
+//		GameObject playerObj = GameObject.Find("Player(Clone)");
+//		Player player = playerObj.GetComponent<Player> ();
+//
+//		int myPlayerNumber = player.myPlayerNumber;
+//
+//		print ("my player number called in bet text disp: " + myPlayerNumber);
+//
+//		Player myPlayer = GameObject.FindWithTag (myPlayerNumber.ToString ()).GetComponent<Player> ();
 	
 		//myPlayer.GeneratePlayerPosList ();
 

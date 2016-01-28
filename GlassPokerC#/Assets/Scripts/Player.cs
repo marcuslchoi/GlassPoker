@@ -13,14 +13,14 @@ public class Player : NetworkBehaviour {
 	public int myPlayerNumber;
 
 	//current number of players 
-	static int players;
+	public static int players;
 
-	static List<int> playerNumbers = new List<int>();
+	public static List<int> playerNumbers = new List<int>();
 
 	//this is a constant (needed in betting text display also????)
 	private List<int> allPlayerPosList = new List<int>(){0,1,2,3,4,5,6,7,8};
 
-	List<int> testPosList = new List<int>();
+	public List<int> testPosList = new List<int>();
 
 	void Start () {
 
