@@ -54,13 +54,15 @@ public class Player : NetworkBehaviour {
 		Text pn = GameObject.Find ("MyPlayerNumber").GetComponent<Text> ();
 		pn.text = "Player Number "+myPlayerNumber;
 
-		//btd.chipAmountText [myPlayerNumber].rectTransform.localPosition = new Vector3 (3, -20, 0);
+		btd.chipAmountText [myPlayerNumber].rectTransform.localPosition = new Vector3 (3, -20, 0);
+
+		btd.chipAmountText [myPlayerNumber].text = "150";
 
 		Text text = GameObject.Find ("Text1").GetComponent<Text> ();
 		text.text = myPlayerNumber.ToString();
 
 		text.rectTransform.localPosition = new Vector3 (myPlayerNumber*50, -20, 0);
-
+		text.color = Color.green;
 
 		//tag the player with their player number so can find with tag
 		gameObject.tag = myPlayerNumber.ToString();
