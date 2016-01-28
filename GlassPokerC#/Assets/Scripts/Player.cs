@@ -42,10 +42,10 @@ public class Player : NetworkBehaviour {
 
 	public override void OnStartLocalPlayer() {
 
+		BettingTextDisplay btd = GameObject.Find ("Chip and Bet Amount Texts").GetComponent<BettingTextDisplay> ();
+
 		//make my player red
 		GetComponent<MeshRenderer>().material.color = Color.red;
-
-
 
 		players++;
 		print ("players "+players);
@@ -53,6 +53,14 @@ public class Player : NetworkBehaviour {
 
 		Text pn = GameObject.Find ("MyPlayerNumber").GetComponent<Text> ();
 		pn.text = "Player Number "+myPlayerNumber;
+
+		//btd.chipAmountText [myPlayerNumber].rectTransform.localPosition = new Vector3 (3, -20, 0);
+
+		Text text = GameObject.Find ("Text1").GetComponent<Text> ();
+		text.text = myPlayerNumber.ToString();
+
+		text.rectTransform.localPosition = new Vector3 (myPlayerNumber*50, -20, 0);
+
 
 		//tag the player with their player number so can find with tag
 		gameObject.tag = myPlayerNumber.ToString();
