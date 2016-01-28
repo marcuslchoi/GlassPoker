@@ -1,9 +1,8 @@
 -debug
 -target:library
 -nowarn:0169
--out:'Temp/Assembly-CSharp.dll'
+-out:'Temp/Assembly-CSharp-firstpass.dll'
 -r:'/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEngine.dll'
--r:'Library/ScriptAssemblies/Assembly-CSharp-firstpass.dll'
 -r:'/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll'
 -r:'/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll'
 -r:'/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEditor.dll'
@@ -80,18 +79,16 @@
 -define:UNITY_EDITOR_64
 -define:UNITY_EDITOR_OSX
 -define:CROSS_PLATFORM_INPUT
-'Assets/Scripts/BetButtonAction.cs'
-'Assets/Scripts/BetSliderAction.cs'
-'Assets/Scripts/BettingTextDisplay.cs'
-'Assets/Scripts/CallButtonAction.cs'
-'Assets/Scripts/CheckBetEquality.cs'
-'Assets/Scripts/ConfirmBetButton.cs'
-'Assets/Scripts/DealCard.cs'
-'Assets/Scripts/FlipCards.cs'
-'Assets/Scripts/FlopDeal.cs'
-'Assets/Scripts/FoldButtonAction.cs'
-'Assets/Scripts/Hand.cs'
-'Assets/Scripts/Player.cs'
-'Assets/Scripts/SceneManager.cs'
+'Assets/Standard Assets/CrossPlatformInput/Scripts/AxisTouchButton.cs'
+'Assets/Standard Assets/CrossPlatformInput/Scripts/ButtonHandler.cs'
+'Assets/Standard Assets/CrossPlatformInput/Scripts/CrossPlatformInputManager.cs'
+'Assets/Standard Assets/CrossPlatformInput/Scripts/InputAxisScrollbar.cs'
+'Assets/Standard Assets/CrossPlatformInput/Scripts/Joystick.cs'
+'Assets/Standard Assets/CrossPlatformInput/Scripts/MobileControlRig.cs'
+'Assets/Standard Assets/CrossPlatformInput/Scripts/PlatformSpecific/MobileInput.cs'
+'Assets/Standard Assets/CrossPlatformInput/Scripts/PlatformSpecific/StandaloneInput.cs'
+'Assets/Standard Assets/CrossPlatformInput/Scripts/TiltInput.cs'
+'Assets/Standard Assets/CrossPlatformInput/Scripts/TouchPad.cs'
+'Assets/Standard Assets/CrossPlatformInput/Scripts/VirtualInput.cs'
 -r:'/Applications/Unity/Unity.app/Contents/Frameworks/Mono/lib/mono/unity/System.Runtime.Serialization.dll'
 -r:'/Applications/Unity/Unity.app/Contents/Frameworks/Mono/lib/mono/unity/System.Xml.Linq.dll'
