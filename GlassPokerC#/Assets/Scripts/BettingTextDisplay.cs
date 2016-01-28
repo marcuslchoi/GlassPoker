@@ -33,8 +33,8 @@ public class BettingTextDisplay : NetworkBehaviour {
 
 	//public int myPlayerNumber;
 
-	[ClientRpc]
-	public void RpcActivatePlayers () {
+	//[ClientRpc]
+	public void ActivatePlayers () {
 
 
 		//this is different for each player
@@ -58,7 +58,7 @@ public class BettingTextDisplay : NetworkBehaviour {
 		//myPlayer.GeneratePlayerPosList ();
 
 		//place each player in position based on their player number and associated active player position list
-		myPlayer.RpcPlacePlayersInPosition ();
+		myPlayer.PlacePlayersInPosition ();
 
 		//de-activate player positions that are not in active player positions list
 		GameObject playerObject = new GameObject();

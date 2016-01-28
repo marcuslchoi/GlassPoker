@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using UnityStandardAssets.CrossPlatformInput;
 using UnityEngine.Networking;
@@ -23,24 +24,62 @@ public class Player : NetworkBehaviour {
 
 	void Start () {
 
+		//players++;
+//		print ("players "+players);
+//		myPlayerNumber = Random.Range (0, 9);
+//
+//		//tag the player with their player number so can find with tag
+//		gameObject.tag = myPlayerNumber.ToString();
+//
+//		print ("player number "+gameObject.tag);
+//
+//		playerNumbers.Add (myPlayerNumber);
+//
+//		GeneratePlayerPosList ();
+		//PlacePlayersInPosition ();
+
+	}
+
+	public override void OnStartLocalPlayer() {
+
+		//make my player red
+		GetComponent<MeshRenderer>().material.color = Color.red;
+
+
+
 		players++;
 		print ("players "+players);
 		myPlayerNumber = Random.Range (0, 9);
 
+		Text pn = GameObject.Find ("MyPlayerNumber").GetComponent<Text> ();
+		pn.text = "Player Number "+myPlayerNumber;
+
 		//tag the player with their player number so can find with tag
 		gameObject.tag = myPlayerNumber.ToString();
 
-		print ("player number "+gameObject.tag);
+		//print ("player number "+gameObject.tag);
 
 		playerNumbers.Add (myPlayerNumber);
 
-		RpcGeneratePlayerPosList ();
-		RpcPlacePlayersInPosition ();
+		GeneratePlayerPosList ();
+
+		PlacePlayersInPosition ();
+
+		//First, set the default camera component of Camera child object to disabled (in inspector). 
+		//This line enables it only for local player
+		//GetComponentInChildren<Camera> ().enabled = true;
+
+
+
+
+		print ("on start local player");
+
+
 
 	}
 
-	[ClientRpc]
-	public void RpcGeneratePlayerPosList ()
+	//[ClientRpc]
+	public void GeneratePlayerPosList ()
 	{
 		//BettingTextDisplay btd = GameObject.Find ("Chip and Bet Amount Texts").GetComponent<BettingTextDisplay> ();
 
@@ -79,8 +118,8 @@ public class Player : NetworkBehaviour {
 	}
 
 	//SHOULD THIS BE STATIC?? IT PLACES PLAYERS IN POSITION BUT USES ACTIVE PLAYER POS LIST, DIFF FOR EACH DEVICE
-	[ClientRpc]
-	public void RpcPlacePlayersInPosition() {
+	//[ClientRpc]
+	public void PlacePlayersInPosition() {
 
 		print ("from place players in position: my player number: " + myPlayerNumber);
 		//BettingTextDisplay btd = GameObject.Find ("Chip and Bet Amount Texts").GetComponent<BettingTextDisplay> ();
@@ -122,14 +161,5 @@ public class Player : NetworkBehaviour {
 
 	}
 
-	public override void OnStartLocalPlayer() {
 
-		//First, set the default camera component of Camera child object to disabled (in inspector). 
-		//This line enables it only for local player
-		//GetComponentInChildren<Camera> ().enabled = true;
-
-		//make my player red
-		GetComponent<MeshRenderer>().material.color = Color.red;
-
-	}
 }
