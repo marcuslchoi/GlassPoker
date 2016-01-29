@@ -9,6 +9,7 @@ public class TestTextChanged : NetworkBehaviour {
 	//[SyncVar]
 	private Text syncText;
 
+	public static int i;
 
 	// Update is called once per frame
 	void Start () {
@@ -26,11 +27,14 @@ public class TestTextChanged : NetworkBehaviour {
 
 	}
 
+
+
 	//runs only on the clients
 	//[ClientCallback]
-	void TransmitTextChange()
+	public void TransmitTextChange()
 	{
-		CmdProvideNewTextToServer ("CHANGED");
+		i++;
+		CmdProvideNewTextToServer ("CHANGED"+i);
 
 	}
 }
