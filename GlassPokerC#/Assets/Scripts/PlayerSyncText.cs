@@ -14,6 +14,14 @@ public class PlayerSyncText : NetworkBehaviour {
 
 	private Text mySyncIntText;
 
+	[SyncVar]
+	private int syncPlayerNumber;
+
+	private Text myPlayerNumText;
+
+	private Text otherPlayerNumText;
+
+	int tempPlayerNum;
 
 	void Start() {
 
@@ -23,6 +31,36 @@ public class PlayerSyncText : NetworkBehaviour {
 		//MOVE THE TEXTS HERE IN RELATION TO THEIR PLAYER NUMBERS
 		mySyncIntText.rectTransform.localPosition = new Vector3 (200, 79, 0);
 		otherSyncIntText.rectTransform.localPosition = new Vector3 (200, 0, 0);
+
+		tempPlayerNum = 5;//Random.Range (0, 9);
+	
+		GameObject myPlayerNumObj = GameObject.Find ("MyPlayerNumber");
+
+		//tag the player number text with its player number 
+		myPlayerNumObj.tag = tempPlayerNum.ToString();
+
+		myPlayerNumText = myPlayerNumObj.GetComponent<Text> ();
+
+		otherPlayerNumText = GameObject.Find ("OtherPlayerNumber").GetComponent<Text> ();
+
+		print ("start");
+
+		//HighlightPlayerNumWithTag (tempPlayerNum);
+
+	}
+
+	public void HighlightPlayerNumWithTag(int tag) {
+		
+		Text highlightedPlayerNum = GameObject.FindWithTag("5").GetComponent<Text> ();
+		print (GameObject.Find ("MyPlayerNumber").tag);
+		print ("tmp " + tempPlayerNum);
+		highlightedPlayerNum.color = Color.yellow;
+	}
+
+	public override void OnStartLocalPlayer() {
+	
+		//IS THIS ONLY CALLED ON HOST??
+		//syncPlayerNumber = Random.Range (0, 9);
 	}
 
 	// Update is called once per frame
@@ -40,19 +78,29 @@ public class PlayerSyncText : NetworkBehaviour {
 
 			//I see other player's syncInt
 			otherSyncIntText.text = "Other Player's Int: "+syncInt.ToString ();
+			otherPlayerNumText.text = "Other Player Number "+syncPlayerNumber;
+
+			GameObject.Find ("OtherPlayerNumber").tag = syncPlayerNumber.ToString ();
+
+			//otherPlayerNumText.color = Color.yellow;
 
 		} else {
 
 			//I see my own syncInt
 			mySyncIntText.text = "My Int: "+syncInt.ToString ();
+
+			myPlayerNumText.text = "My Player Number "+syncPlayerNumber;
+
+			GameObject.Find ("MyPlayerNumber").tag = syncPlayerNumber.ToString ();
 		}
 	}
 
 	//runs on the server, called on my client
 	[Command]
-	void CmdProvideTextToServer(int integer)
+	void CmdProvideTextToServer(int integer, int playerNum)
 	{
 		syncInt = integer;
+		syncPlayerNumber = playerNum;
 	}
 
 	public int i;
@@ -74,7 +122,7 @@ public class PlayerSyncText : NetworkBehaviour {
 				Call ();
 			}
 
-			CmdProvideTextToServer (i);
+			CmdProvideTextToServer (i, tempPlayerNum);
 
 		}
 	}
@@ -89,7 +137,7 @@ public class PlayerSyncText : NetworkBehaviour {
 			print ("called");
 
 			i -= currentBet;
-			CmdProvideTextToServer (i);
+			CmdProvideTextToServer (i, syncPlayerNumber);
 
 		}
 	}

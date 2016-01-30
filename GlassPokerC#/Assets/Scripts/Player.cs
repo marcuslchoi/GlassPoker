@@ -43,25 +43,22 @@ public class Player : NetworkBehaviour {
 
 		players++;
 		print ("players "+players);
-		myPlayerNumber = Random.Range (0, 9);
 
-		Text playerNumText = GameObject.Find ("MyPlayerNumber").GetComponent<Text> ();
-		playerNumText.text = "Player Number "+myPlayerNumber;
 
-		//btd.chipAmountText [myPlayerNumber].rectTransform.localPosition = new Vector3 (3, -20, 0);
-
-		btd.chipAmountText [myPlayerNumber].text = "150";
-
-		//tag the player with their player number so can find with tag
-		gameObject.tag = myPlayerNumber.ToString();
-
-		//print ("player number "+gameObject.tag);
-
-		playerNumbers.Add (myPlayerNumber);
-
-		GeneratePlayerPosList ();
-
-		PlacePlayersInPosition ();
+//		myPlayerNumber = Random.Range (0, 9);
+//
+//		Text playerNumText = GameObject.Find ("MyPlayerNumber").GetComponent<Text> ();
+//
+//		btd.chipAmountText [myPlayerNumber].text = "150";
+//
+//		//tag the player with their player number so can find with tag
+//		gameObject.tag = myPlayerNumber.ToString();
+//
+//		playerNumbers.Add (myPlayerNumber);
+//
+//		GeneratePlayerPosList ();
+//
+//		PlacePlayersInPosition ();
 
 	}
 
