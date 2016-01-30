@@ -7,6 +7,7 @@ using System.Collections.Generic;
 
 public class Player : NetworkBehaviour {
 
+	//for moving the player with arrow keys. not needed in final product
 	private Vector3 inputValue;
 
 	//not static because each player has different player number
@@ -24,19 +25,12 @@ public class Player : NetworkBehaviour {
 
 	void Start () {
 
-		//players++;
-//		print ("players "+players);
-//		myPlayerNumber = Random.Range (0, 9);
-//
-//		//tag the player with their player number so can find with tag
-//		gameObject.tag = myPlayerNumber.ToString();
-//
-//		print ("player number "+gameObject.tag);
-//
-//		playerNumbers.Add (myPlayerNumber);
-//
-//		GeneratePlayerPosList ();
-		//PlacePlayersInPosition ();
+		//the player number of the other player
+//		if (!isLocalPlayer) {
+//		
+//			Text otherPlayerNumText = GameObject.Find ("OtherPlayerNumber").GetComponent<Text> ();
+//			otherPlayerNumText.text = "Player Number "+myPlayerNumber;
+//		}
 
 	}
 
@@ -51,18 +45,12 @@ public class Player : NetworkBehaviour {
 		print ("players "+players);
 		myPlayerNumber = Random.Range (0, 9);
 
-		Text pn = GameObject.Find ("MyPlayerNumber").GetComponent<Text> ();
-		pn.text = "Player Number "+myPlayerNumber;
+		Text playerNumText = GameObject.Find ("MyPlayerNumber").GetComponent<Text> ();
+		playerNumText.text = "Player Number "+myPlayerNumber;
 
-		btd.chipAmountText [myPlayerNumber].rectTransform.localPosition = new Vector3 (3, -20, 0);
+		//btd.chipAmountText [myPlayerNumber].rectTransform.localPosition = new Vector3 (3, -20, 0);
 
 		btd.chipAmountText [myPlayerNumber].text = "150";
-
-		Text text = GameObject.Find ("Text1").GetComponent<Text> ();
-		text.text = myPlayerNumber.ToString();
-
-		text.rectTransform.localPosition = new Vector3 (myPlayerNumber*50, -20, 0);
-		text.color = Color.green;
 
 		//tag the player with their player number so can find with tag
 		gameObject.tag = myPlayerNumber.ToString();
@@ -74,17 +62,6 @@ public class Player : NetworkBehaviour {
 		GeneratePlayerPosList ();
 
 		PlacePlayersInPosition ();
-
-		//First, set the default camera component of Camera child object to disabled (in inspector). 
-		//This line enables it only for local player
-		//GetComponentInChildren<Camera> ().enabled = true;
-
-
-
-
-		print ("on start local player");
-
-
 
 	}
 
@@ -98,9 +75,6 @@ public class Player : NetworkBehaviour {
 
 		//sort the active player list so that players go in correct order and active player position list matches it	
 		BettingTextDisplay.activePlayerList.Sort ();
-
-
-
 
 		//THIS IS DIFFERENT ON EACH DEVICE DEPENDING ON THE PLAYER NUMBER
 		foreach (int activePlayerNumber in BettingTextDisplay.activePlayerList)
