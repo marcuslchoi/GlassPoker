@@ -29,8 +29,10 @@ public class Game : MonoBehaviour {
 
 		List<string> twoCardList;
 
+		int playerCount;
+
 		//for each player in game
-		for (int playerCount = 0; playerCount < playersInGame.Count; playerCount++) {
+		for (playerCount = 0; playerCount < playersInGame.Count; playerCount++) {
 
 			//create a new object for list of lists to point to
 			twoCardList = new List<string>(2);
@@ -41,7 +43,7 @@ public class Game : MonoBehaviour {
 				indexOfCardIndices = Random.Range (0, cardIndices.Count - 1);
 				twoCardList.Add(Hand.cardNames [cardIndices [indexOfCardIndices]]);
 
-				print ("card " + i + ": " + twoCardList [i]);
+				print ("card " + i + " player "+playerCount+": " + twoCardList [i]);
 
 				cardIndices.RemoveAt (indexOfCardIndices);
 			}
@@ -51,15 +53,15 @@ public class Game : MonoBehaviour {
 
 		}
 
-		foreach (string card in twoCardLists[0]) {
-			print ("twoCardLists[0] "+card);
-		
-		}
-
-		foreach (string card in twoCardLists[1]) {
-			print ("twoCardLists[1] "+card);
-
-		}
+//		foreach (string card in twoCardLists[0]) {
+//			print ("twoCardLists[0] "+card);
+//		
+//		}
+//
+//		foreach (string card in twoCardLists[1]) {
+//			print ("twoCardLists[1] "+card);
+//
+//		}
 
 		//generate the community cards
 		string[] commCards = new string[5];
@@ -73,14 +75,35 @@ public class Game : MonoBehaviour {
 			cardIndices.RemoveAt (indexOfCardIndices);
 		}
 
-		//number of cards in full hand
-		int numberOfCards = 7; //twoCardArray.Length + commCards.Length;
+		//each player's full hand of cards
+		string[] myCards;
 
-		//create the string array of my cards. Includes 2 card hand + community cards
-		string[] myCards = new string[numberOfCards];
+		//each player's Hand object
+		Hand myHand;
 
-		twoCardLists[0].CopyTo(myCards,0);
-		commCards.CopyTo(myCards,twoCardLists[0].Count);
+		List<Hand> playerHands = new List<Hand> (playersInGame.Count);
+
+		//populating the cardsArrays for each player
+		for (playerCount = 0; playerCount < playersInGame.Count; playerCount++) {
+		
+			//create a new object for cardsArrayList to point to
+			myCards = new string[7];
+
+			//copy the 2 cards to myCards at index 0. Copy comm cards to myCards at index 2
+			twoCardLists[playerCount].CopyTo(myCards,0);
+			commCards.CopyTo(myCards,2);
+
+			//create the Hand object using the current myCards array
+			myHand = new Hand(myCards);
+
+			//add the current Hand object to the playerHands list
+			playerHands.Add (myHand);
+
+			//get rank for each player's hand
+			playerHands[playerCount].getRank ();
+		}
+
+
 
 		//4kind
 		//myCards = new string[] {"4S", "3H", "4C","2S","4H","4D"};
@@ -99,9 +122,7 @@ public class Game : MonoBehaviour {
 		//2 pair
 		//myCards = new string[] {"6C","6H","3S","4C","AS","3C","AC"};
 
-		Hand myHand = new Hand (myCards);
 
-		myHand.getRank ();
 
 	}
 		

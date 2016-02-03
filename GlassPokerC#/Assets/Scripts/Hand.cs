@@ -206,7 +206,7 @@ public class Hand : MonoBehaviour {
 		if (isTwoOfAKind && isThreeOfAKind)
 		{
 			isFullHouse = true;
-			print("full house");
+			//print("full house");
 
 		}
 
