@@ -55,6 +55,7 @@
      <Compile Include="Assets\Scripts\FlipCards.cs" />
      <Compile Include="Assets\Scripts\FlopDeal.cs" />
      <Compile Include="Assets\Scripts\FoldButtonAction.cs" />
+     <Compile Include="Assets\Scripts\Game.cs" />
      <Compile Include="Assets\Scripts\Hand.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\PlayerSyncText.cs" />

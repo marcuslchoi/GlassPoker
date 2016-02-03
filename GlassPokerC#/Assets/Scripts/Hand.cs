@@ -7,13 +7,13 @@ using System.Linq;
 public class Hand : MonoBehaviour {
 
 	//string of card names, value + suit, suits C D H S (alphabetical)
-	//private string[] cardNames = new string[]{"2C","3C","4C","5C","6C","7C","8C","9C","10C","JC","QC","KC","AC","2D","3D","4D","5D","6D","7D","8D","9D","10D","JD","QD","KD","AD","2H","3H","4H","5H","6H","7H","8H","9H","10H","JH","QH","KH","AH","2S","3S","4S","5S","6S","7S","8S","9S","10S","JS","QS","KS","AS"};
+	public static string[] cardNames = new string[]{"2C","3C","4C","5C","6C","7C","8C","9C","10C","JC","QC","KC","AC","2D","3D","4D","5D","6D","7D","8D","9D","10D","JD","QD","KD","AD","2H","3H","4H","5H","6H","7H","8H","9H","10H","JH","QH","KH","AH","2S","3S","4S","5S","6S","7S","8S","9S","10S","JS","QS","KS","AS"};
 
-	private string[] pokerHandsArray = new string[]{"HIGH_CARD","PAIR","TWO_PAIR","THREE_OF_A_KIND","STRAIGHT","FLUSH","FULL_HOUSE","FOUR_OF_A_KIND","STRAIGHT_FLUSH"};
-
+	public static string[] pokerHandsArray = new string[]{"HIGH_CARD","PAIR","TWO_PAIR","THREE_OF_A_KIND","STRAIGHT","FLUSH","FULL_HOUSE","FOUR_OF_A_KIND","STRAIGHT_FLUSH"};
 
 	public string[] cards;
 
+	//initializer
 	public Hand(string[] cArray)
 	{
 		cards = cArray;
@@ -22,13 +22,8 @@ public class Hand : MonoBehaviour {
 	List<int> cardsToSuitlessIntRanksList(string[] cardsToBeIntRanked) 
 	{
 
-		//int[] cardsRankInt = new int[cards.Length];
-
-		//USE A LIST INSTEAD OF ARRAY?
+		//USE A LIST INSTEAD OF ARRAY
 		List<int> cardsRankInt = new List<int>();
-//		var list2 = new List<int>();
-//		var list3 = new List<int> { 1, 2, 3 };  // Initialize the list with 3 elements.
-//		list3.Add(4); // Add a new element, list3.Count is now 4.
 
 		for (int i = 0; i < cardsToBeIntRanked .Length; i++) 
 		{
@@ -57,7 +52,6 @@ public class Hand : MonoBehaviour {
 
 
 		}
-		//print (cardsRankInt[2]);
 
 		return cardsRankInt;        
 	}
@@ -311,14 +305,21 @@ public class Hand : MonoBehaviour {
 	    {
 			handRank = System.Array.IndexOf(pokerHandsArray,"TWO_PAIR");
 	        
-	        //add top 2 pair values to handRank
+			//if there are 3 pair values, remove lowest pair
+			if (pairValues.Count == 3) {
+			
+				pairValues.RemoveAt (pairValues.Count - 1);
+			
+			}
+
+	        //add the 2 pair values to handRank
 			foreach (int pairValue in pairValues)
 	        {
 	            handRank += pairValue/divisor;
 	            divisor *= 100;
+
 	        }
 	        
-	        //int counter = 0;
 	        //find the highest 5th card in hand that is not one of the pairs in pairValues, add to handRank
 			foreach (int rank in intRanksUnique)
 	        {
@@ -593,96 +594,52 @@ public class Hand : MonoBehaviour {
 		return handRank;
 	}
 
+	public double getRank() {
 
-	// Use this for initialization
-	void Start () {
-	
-		string[] cardNames = new string[]{"2C","3C","4C","5C","6C","7C","8C","9C","10C","JC","QC","KC","AC","2D","3D","4D","5D","6D","7D","8D","9D","10D","JD","QD","KD","AD","2H","3H","4H","5H","6H","7H","8H","9H","10H","JH","QH","KH","AH","2S","3S","4S","5S","6S","7S","8S","9S","10S","JS","QS","KS","AS"};
-
-		//creating cardIndices list from 0-51
-		var cardIndices = new List<int>();
-		for (int i = 0; i < 52; i++) {
-			cardIndices.Add(i);
-		}
-
-		//number of cards in hand
-		int numberOfCards = 7;	//2,5,6, or 7 should work
-
-		string[] myCards = new string[numberOfCards];
-
-		int indexOfCardIndices = new int ();
-
-		for (int i = 0; i < myCards.Length; i++) {
-
-			indexOfCardIndices = Random.Range (0, cardIndices.Count - 1);
-			myCards[i] = cardNames[cardIndices[indexOfCardIndices]];
-
-			print (myCards [i]);
-
-			cardIndices.RemoveAt (indexOfCardIndices);
-		}
-		//4kind
-		//string[] myCards = new string[] {"4S", "3H", "4C","2S","4H","4D"};
-
-		//flush
-		//string[] myCards = new string[] {"5S", "3S", "4S","2S","4H","QS"};
-
-		//low straight
-		//string[] myCards = new string[] {"6C","3S","2H","4D","AS","3D","5S"};
-
-		//straight flush
-		//string[] myCards = new string[] {"AD","2D","JC","3D","4D","5D","7H"};
-
-
-		Hand myHand = new Hand(myCards);
-
-		//WHY DOES THIS HAVE TO BE HERE AGAIN??
-		string[] pokerHandsArray = new string[]{"HIGH_CARD","PAIR","TWO_PAIR","THREE_OF_A_KIND","STRAIGHT","FLUSH","FULL_HOUSE","FOUR_OF_A_KIND","STRAIGHT_FLUSH"};
-
-		if (Mathf.Floor((float)myHand.checkForStraightFlush()) == System.Array.IndexOf(pokerHandsArray,"STRAIGHT_FLUSH"))
+		if (Mathf.Floor ((float)checkForStraightFlush ()) == System.Array.IndexOf (pokerHandsArray, "STRAIGHT_FLUSH")) 
 		{
-			print("Straight Flush Rank: " +myHand.checkForStraightFlush ());
+			print ("Straight Flush Rank: " + checkForStraightFlush ());
+			return checkForStraightFlush ();
 		}
-		else if (Mathf.Floor((float)myHand.checkForMultiples()) == System.Array.IndexOf(pokerHandsArray,"FOUR_OF_A_KIND"))
+		else if (Mathf.Floor((float)checkForMultiples()) == System.Array.IndexOf(pokerHandsArray,"FOUR_OF_A_KIND"))
 		{
-			print("4 of a Kind Rank: " +myHand.checkForMultiples ());
+			print("4 of a Kind Rank: " +checkForMultiples ());
+			return checkForMultiples ();
 		}
-		else if (Mathf.Floor((float)myHand.checkForMultiples()) == System.Array.IndexOf(pokerHandsArray,"FULL_HOUSE"))
+		else if (Mathf.Floor((float)checkForMultiples()) == System.Array.IndexOf(pokerHandsArray,"FULL_HOUSE"))
 		{
-			print("Full House Rank: " +myHand.checkForMultiples ());
+			print("Full House Rank: " +checkForMultiples ());
+			return checkForMultiples ();
 		}
-		else if (Mathf.Floor((float)myHand.checkForFlush()) == System.Array.IndexOf(pokerHandsArray,"FLUSH"))
+		else if (Mathf.Floor((float)checkForFlush()) == System.Array.IndexOf(pokerHandsArray,"FLUSH"))
 		{
-			print("Flush Rank: " +myHand.checkForFlush ());
+			print("Flush Rank: " +checkForFlush ());
+			return checkForFlush ();
 		}
-		else if (Mathf.Floor((float)myHand.checkForStraight()) == System.Array.IndexOf(pokerHandsArray,"STRAIGHT"))
+		else if (Mathf.Floor((float)checkForStraight()) == System.Array.IndexOf(pokerHandsArray,"STRAIGHT"))
 		{
-			print("Straight Rank: " +myHand.checkForStraight ());
+			print("Straight Rank: " +checkForStraight ());
+			return checkForStraight ();
 		}
-		else if (Mathf.Floor((float)myHand.checkForMultiples()) == System.Array.IndexOf(pokerHandsArray,"THREE_OF_A_KIND"))
+		else if (Mathf.Floor((float)checkForMultiples()) == System.Array.IndexOf(pokerHandsArray,"THREE_OF_A_KIND"))
 		{
-			print("3 of a Kind Rank: " +myHand.checkForMultiples ());
+			print("3 of a Kind Rank: " +checkForMultiples ());
+			return checkForMultiples ();
 		}
-		else if (Mathf.Floor((float)myHand.checkForMultiples()) == System.Array.IndexOf(pokerHandsArray,"TWO_PAIR"))
+		else if (Mathf.Floor((float)checkForMultiples()) == System.Array.IndexOf(pokerHandsArray,"TWO_PAIR"))
 		{
-			print("2 Pair Rank: " +myHand.checkForMultiples ());
+			print("2 Pair Rank: " +checkForMultiples ());
+			return checkForMultiples ();
 		}
-		else if (Mathf.Floor((float)myHand.checkForMultiples()) == System.Array.IndexOf(pokerHandsArray,"PAIR"))
+		else if (Mathf.Floor((float)checkForMultiples()) == System.Array.IndexOf(pokerHandsArray,"PAIR"))
 		{
-			print("1 Pair Rank: " +myHand.checkForMultiples ());
+			print("1 Pair Rank: " +checkForMultiples ());
+			return checkForMultiples ();
 		}
-		else if (Mathf.Floor((float)myHand.checkForMultiples()) == System.Array.IndexOf(pokerHandsArray,"HIGH_CARD"))
+		else // if (Mathf.Floor((float)checkForMultiples()) == System.Array.IndexOf(pokerHandsArray,"HIGH_CARD"))
 		{
-			print("High Card Rank: " +myHand.checkForMultiples ());
+			print("High Card Rank: " +checkForMultiples ());
+			return checkForMultiples ();
 		}
-	}
-	
-	// Update is called once per frame
-	void Update () {
-
-		if (Input.GetKeyDown (KeyCode.UpArrow)) {
-			//print ("up arrow");
-		}
-	
 	}
 }
