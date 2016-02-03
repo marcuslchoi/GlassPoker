@@ -25,36 +25,41 @@ public class Game : MonoBehaviour {
 			
 		int indexOfCardIndices = new int ();
 
-		List<List<string>> twoCardLists = new List<List<string>>();
+		List<List<string>> twoCardLists = new List<List<string>>(playersInGame.Count);
 
-		List<string> twoCardList = new List<string>(2);
+		List<string> twoCardList;
 
 		//for each player in game
 		for (int playerCount = 0; playerCount < playersInGame.Count; playerCount++) {
 
+			//create a new object for list of lists to point to
+			twoCardList = new List<string>(2);
+
 			//generate a 2 card hand
-			for (int i = 0; i < twoCardList.Count; i++) 
+			for (int i = 0; i < 2; i++) 
 			{
 				indexOfCardIndices = Random.Range (0, cardIndices.Count - 1);
-				twoCardList[i] = Hand.cardNames [cardIndices [indexOfCardIndices]];
+				twoCardList.Add(Hand.cardNames [cardIndices [indexOfCardIndices]]);
 
 				print ("card " + i + ": " + twoCardList [i]);
 
 				cardIndices.RemoveAt (indexOfCardIndices);
 			}
 
+			//WHY IS THIS UPDATING THE 0TH INDEX WHEN ON THE FIRST INDEX??
 			twoCardLists.Add (twoCardList);
 
 		}
 
-		print ("two card lists[0]: " + twoCardLists [0]);//[0]+ twoCardLists [0][1]);
-
 		foreach (string card in twoCardLists[0]) {
-			print ("asdf"+card);
+			print ("twoCardLists[0] "+card);
 		
 		}
-//
-//		print ("two card lists[1]: " + twoCardLists [1][0]+ twoCardLists [1][1]);
+
+		foreach (string card in twoCardLists[1]) {
+			print ("twoCardLists[1] "+card);
+
+		}
 
 		//generate the community cards
 		string[] commCards = new string[5];
@@ -74,15 +79,8 @@ public class Game : MonoBehaviour {
 		//create the string array of my cards. Includes 2 card hand + community cards
 		string[] myCards = new string[numberOfCards];
 
-		//twoCardLists[0].CopyTo(myCards,0);
-		commCards.CopyTo(myCards,0);
-		myCards [5] = twoCardList[0];
-		myCards [6] = twoCardList[1];
-
-		foreach (string card in myCards) {
-			print (card);
-		
-		}
+		twoCardLists[0].CopyTo(myCards,0);
+		commCards.CopyTo(myCards,twoCardLists[0].Count);
 
 		//4kind
 		//myCards = new string[] {"4S", "3H", "4C","2S","4H","4D"};
