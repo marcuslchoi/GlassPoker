@@ -14,7 +14,7 @@ public class Game : MonoBehaviour {
 
 	void Start () {
 
-		playersInGame = new List<int>{ 3, 6 };
+		playersInGame = new List<int>{ 3, 6,4,8 };
 
 		//creating cardIndices list from 0-51. Represents a full deck
 		//must be refreshed every new game
@@ -48,20 +48,9 @@ public class Game : MonoBehaviour {
 				cardIndices.RemoveAt (indexOfCardIndices);
 			}
 
-			//WHY IS THIS UPDATING THE 0TH INDEX WHEN ON THE FIRST INDEX??
 			twoCardLists.Add (twoCardList);
 
 		}
-
-//		foreach (string card in twoCardLists[0]) {
-//			print ("twoCardLists[0] "+card);
-//		
-//		}
-//
-//		foreach (string card in twoCardLists[1]) {
-//			print ("twoCardLists[1] "+card);
-//
-//		}
 
 		//generate the community cards
 		string[] commCards = new string[5];
@@ -83,7 +72,7 @@ public class Game : MonoBehaviour {
 
 		List<Hand> playerHands = new List<Hand> (playersInGame.Count);
 
-		//populating the cardsArrays for each player
+		//creating the Hand object for each player
 		for (playerCount = 0; playerCount < playersInGame.Count; playerCount++) {
 		
 			//create a new object for cardsArrayList to point to
@@ -98,12 +87,42 @@ public class Game : MonoBehaviour {
 
 			//add the current Hand object to the playerHands list
 			playerHands.Add (myHand);
-
-			//get rank for each player's hand
-			playerHands[playerCount].getRank ();
 		}
 
+		//list of all ranks in the game
+		List<double> rankList = new List<double> ();
 
+		int winningPlayerIndex = new int();
+
+		double winRank = 0;
+
+		//get the ranks, find winner
+		for (playerCount = 0; playerCount < playersInGame.Count; playerCount++) {
+
+			//add each player's rank to the rank list
+			rankList.Add (playerHands [playerCount].getRank ());
+
+			//finding the winning rank and winning player index
+			if (rankList[playerCount] > winRank)
+			{
+				winRank = playerHands [playerCount].getRank ();
+				winningPlayerIndex = playerCount;
+			}
+		}
+
+		int winPoints = 0;
+		//calculate the points to be added to winner
+		foreach (double rank in rankList) {
+		
+			if (rank != winRank) {
+			
+				winPoints += (int)Mathf.Floor ((float)rank) + 1;
+			}
+		}
+
+		print ("winning player at index " + winningPlayerIndex + " earns " + winPoints + " points.");
+
+		//Add int val of loser + 1 for each loser to the winner's points
 
 		//4kind
 		//myCards = new string[] {"4S", "3H", "4C","2S","4H","4D"};
@@ -121,8 +140,6 @@ public class Game : MonoBehaviour {
 	
 		//2 pair
 		//myCards = new string[] {"6C","6H","3S","4C","AS","3C","AC"};
-
-
 
 	}
 		
