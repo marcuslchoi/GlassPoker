@@ -14,13 +14,15 @@ public class Hand : MonoBehaviour {
 	public string[] cards;
 
 	public List<string> twoCardList;
+	public List<string> commCardList;
 
 	//initializer
-	public Hand(string[] cArray)//, List<string> twoCards)
+	public Hand(string[] cArray)
 	{
 		cards = cArray;
 
-		//twoCardList = twoCards;
+		twoCardList = cards.ToList ();
+		twoCardList.RemoveRange (2, 5);
 	}
 		
 	List<int> cardsToSuitlessIntRanksList(string[] cardsToBeIntRanked) 

@@ -5,16 +5,35 @@ using System.Linq;
 
 public class GamePlayer : MonoBehaviour {
 
-	public List<string> twoCardList;
+	public int ID;
 
-	// Use this for initialization
-	void Start () {
-	
+	public Hand hand;
 
-	}
+	//initializer
+	public GamePlayer(int id) {
 	
-	// Update is called once per frame
-	void Update () {
+		ID = id;
 	
 	}
+
+	public void Call()
+	{
+
+	}
+
+	public void Bet()
+	{
+
+	}
+
+	public void Fold()
+	{
+
+	}
+
+	public void Check()
+	{
+
+	}
+
 }

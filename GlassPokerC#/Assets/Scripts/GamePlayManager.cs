@@ -11,14 +11,26 @@ public class GamePlayManager : MonoBehaviour {
 	//COMPARE THEM AND ADD POINTS TO THE WINNER
 
 	//these are the players that are present in the current game, identified by player number
-	public static List<int> playersInGame;
+	public static List<int> playerIDs;
 
 	public static List<int> cardIndices;
 
 	void Start () {
 
-		//player IDs
-		playersInGame = new List<int>{ 3, 6,4,8 };
+		//player IDs (to be pulled from server)
+		playerIDs = new List<int>{3, 6};
+
+		GamePlayer player;
+		List<GamePlayer> playerList = new List<GamePlayer>();
+
+		//creating GamePlayer objects using player IDs
+		foreach (int playerID in playerIDs) {
+		
+			player = new GamePlayer (playerID);
+
+			playerList.Add (player);
+		
+		}
 
 		//creating cardIndices list from 0-51. Represents a full deck
 		cardIndices = new List<int>();
@@ -38,16 +50,14 @@ public class GamePlayManager : MonoBehaviour {
 					
 		int indexOfShuffledIndices = new int ();
 	
-		List<List<string>> twoCardLists = new List<List<string>>(playersInGame.Count);
+		List<List<string>> twoCardLists = new List<List<string>>(playerList.Count);
 
 		List<string> twoCardList;
 
 		int playerCount;
 
-		//Player.twoCardList !!!!!
-
 		//for each player in game
-		for (playerCount = 0; playerCount < playersInGame.Count; playerCount++) {
+		for (playerCount = 0; playerCount < playerList.Count; playerCount++) {
 
 			//create a new object for list of lists to point to
 			twoCardList = new List<string>(2);
@@ -59,10 +69,9 @@ public class GamePlayManager : MonoBehaviour {
 
 				twoCardList.Add(Hand.cardNames [shuffledIndices [indexOfShuffledIndices]]);
 
-				print ("card " + i + " player "+playerCount+": " + twoCardList [i]);
+				//print ("card " + i + " player "+playerCount+": " + twoCardList [i]);
 			}
 
-			//put this in hand class (Player.Hand.twocardlists) !!!!!
 			twoCardLists.Add (twoCardList);
 
 		}
@@ -86,12 +95,9 @@ public class GamePlayManager : MonoBehaviour {
 		//each player's Hand object
 		Hand myHand;
 
-		List<Hand> playerHands = new List<Hand> (playersInGame.Count);
+		//creating the Hand object for each player and assigning it to the player
+		for (playerCount = 0; playerCount < playerList.Count; playerCount++) {
 
-		//creating the Hand object for each player
-		for (playerCount = 0; playerCount < playersInGame.Count; playerCount++) {
-		
-			//create a new object for cardsArrayList to point to
 			myCards = new string[7];
 
 			//copy the 2 cards to myCards at index 0. Copy comm cards to myCards at index 2
@@ -101,31 +107,38 @@ public class GamePlayManager : MonoBehaviour {
 			//create the Hand object using the current myCards array
 			myHand = new Hand(myCards);
 
-			//add the current Hand object to the playerHands list
-			playerHands.Add (myHand);
+			//assign the current hand to the current player
+			playerList [playerCount].hand = myHand;
 		}
 
-		//Player.call, bet, fold, check
+		//print the player IDs and their respective cards
+		foreach (GamePlayer gamePlayer in playerList)
+		{
+			print("Player ID "+gamePlayer.ID+" has cards "+gamePlayer.hand.twoCardList[0]+ " "+gamePlayer.hand.twoCardList[1]);
+
+		}
+			
+		//Player.call, bet, fold, check !!!!!!
 
 		//list of all ranks in the game
 		List<double> rankList = new List<double> ();
 
-		int winningPlayerIndex = new int();
+		int winningPlayerId = new int();
 
 		double winRank = 0;
 
 		//get the ranks, find winner
 		//NEED TO CHECK FOR TIE!!!
-		for (playerCount = 0; playerCount < playersInGame.Count; playerCount++) {
+		for (playerCount = 0; playerCount < playerList.Count; playerCount++) {
 
 			//add each player's rank to the rank list
-			rankList.Add (playerHands [playerCount].getRank ());
+			rankList.Add (playerList [playerCount].hand.getRank ());
 
 			//finding the winning rank and winning player index
 			if (rankList[playerCount] > winRank)
 			{
-				winRank = playerHands [playerCount].getRank ();
-				winningPlayerIndex = playerCount;
+				winRank = playerList [playerCount].hand.getRank ();
+				winningPlayerId = playerList [playerCount].ID;
 			}
 		}
 
@@ -139,9 +152,7 @@ public class GamePlayManager : MonoBehaviour {
 			}
 		}
 
-		print ("winning player at index " + winningPlayerIndex + " earns " + winPoints + " points.");
-
-		//Add int val of loser + 1 for each loser to the winner's points
+		print ("winning player ID " + winningPlayerId + " earns " + winPoints + " points.");
 
 		//4kind
 		//myCards = new string[] {"4S", "3H", "4C","2S","4H","4D"};
