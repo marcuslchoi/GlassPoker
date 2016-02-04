@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 
-public class Game : MonoBehaviour {
+
+public class GamePlayManager : MonoBehaviour {
 
 	//GENERATE A HAND FOR EACH PLAYER IN GAME. MAKE SURE THERE ARE 5 COMM CARDS.
 	//COMPARE THEM AND ADD POINTS TO THE WINNER
@@ -12,24 +13,38 @@ public class Game : MonoBehaviour {
 	//these are the players that are present in the current game, identified by player number
 	public static List<int> playersInGame;
 
+	public static List<int> cardIndices;
+
 	void Start () {
 
+		//player IDs
 		playersInGame = new List<int>{ 3, 6,4,8 };
 
 		//creating cardIndices list from 0-51. Represents a full deck
-		//must be refreshed every new game
-		var cardIndices = new List<int>();
+		cardIndices = new List<int>();
 		for (int i = 0; i < 52; i++) {
 			cardIndices.Add(i);
 		}
-			
-		int indexOfCardIndices = new int ();
 
+		List<int> shuffledIndices = cardIndices;
+
+		//random shuffle the cards
+		for (int i = 0; i < shuffledIndices.Count; i++) {			
+			int temp = shuffledIndices[i];
+			int randomIndex = Random.Range(i, shuffledIndices.Count);
+			shuffledIndices[i] = shuffledIndices[randomIndex];
+			shuffledIndices[randomIndex] = temp;
+		}
+					
+		int indexOfShuffledIndices = new int ();
+	
 		List<List<string>> twoCardLists = new List<List<string>>(playersInGame.Count);
 
 		List<string> twoCardList;
 
 		int playerCount;
+
+		//Player.twoCardList !!!!!
 
 		//for each player in game
 		for (playerCount = 0; playerCount < playersInGame.Count; playerCount++) {
@@ -40,30 +55,31 @@ public class Game : MonoBehaviour {
 			//generate a 2 card hand
 			for (int i = 0; i < 2; i++) 
 			{
-				indexOfCardIndices = Random.Range (0, cardIndices.Count - 1);
-				twoCardList.Add(Hand.cardNames [cardIndices [indexOfCardIndices]]);
+				indexOfShuffledIndices = 2*playerCount + i;
+
+				twoCardList.Add(Hand.cardNames [shuffledIndices [indexOfShuffledIndices]]);
 
 				print ("card " + i + " player "+playerCount+": " + twoCardList [i]);
-
-				cardIndices.RemoveAt (indexOfCardIndices);
 			}
 
+			//put this in hand class (Player.Hand.twocardlists) !!!!!
 			twoCardLists.Add (twoCardList);
 
 		}
 
 		//generate the community cards
-		string[] commCards = new string[5];
-		for (int i = 0; i < commCards.Length; i++) {
+		List<string> commCards = new List<string>(5);
 
-			indexOfCardIndices = Random.Range (0, cardIndices.Count - 1);
-			commCards[i] = Hand.cardNames[cardIndices[indexOfCardIndices]];
+		for (int i = 0; i < 5; i++) {
+
+			indexOfShuffledIndices++;
+
+			commCards.Add(Hand.cardNames[shuffledIndices[indexOfShuffledIndices]]);
 
 			print ("comm card "+i+": " + commCards [i]);
 
-			cardIndices.RemoveAt (indexOfCardIndices);
 		}
-
+			
 		//each player's full hand of cards
 		string[] myCards;
 
@@ -89,6 +105,8 @@ public class Game : MonoBehaviour {
 			playerHands.Add (myHand);
 		}
 
+		//Player.call, bet, fold, check
+
 		//list of all ranks in the game
 		List<double> rankList = new List<double> ();
 
@@ -97,6 +115,7 @@ public class Game : MonoBehaviour {
 		double winRank = 0;
 
 		//get the ranks, find winner
+		//NEED TO CHECK FOR TIE!!!
 		for (playerCount = 0; playerCount < playersInGame.Count; playerCount++) {
 
 			//add each player's rank to the rank list
