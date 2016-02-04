@@ -17,6 +17,8 @@ public class Hand : MonoBehaviour {
 	public List<string> commCardList;
 
 	//initializer
+
+	//NEED TO MAKE THIS WORK FOR TWO CARD HAND, 5,6, AND 7!!!!!!!!
 	public Hand(string[] cArray)
 	{
 		cards = cArray;

@@ -15,10 +15,15 @@ public class GamePlayManager : MonoBehaviour {
 
 	public static List<int> cardIndices;
 
+	public static int potAmount;
+
+	//CURRENT PLAYER, PREVIOUS PLAYER
+	//LAST BET AMOUNT SHOULD BE GLOBAL, CURRENT MINIMUM RAISE
+
 	void Start () {
 
-		//player IDs (to be pulled from server)
-		playerIDs = new List<int>{3, 6};
+		//player IDs (TO BE RETRIEVED FROM SERVER)
+		playerIDs = new List<int>{3, 6, 4};
 
 		GamePlayer player;
 		List<GamePlayer> playerList = new List<GamePlayer>();
@@ -88,6 +93,9 @@ public class GamePlayManager : MonoBehaviour {
 			print ("comm card "+i+": " + commCards [i]);
 
 		}
+
+		//straight flush community cards for testing
+		//commCards = new List<string> {"AD","2D","3D","4D","5D"};
 			
 		//each player's full hand of cards
 		string[] myCards;
@@ -117,8 +125,6 @@ public class GamePlayManager : MonoBehaviour {
 			print("Player ID "+gamePlayer.ID+" has cards "+gamePlayer.hand.twoCardList[0]+ " "+gamePlayer.hand.twoCardList[1]);
 
 		}
-			
-		//Player.call, bet, fold, check !!!!!!
 
 		//list of all ranks in the game
 		List<double> rankList = new List<double> ();
@@ -128,7 +134,6 @@ public class GamePlayManager : MonoBehaviour {
 		double winRank = 0;
 
 		//get the ranks, find winner
-		//NEED TO CHECK FOR TIE!!!
 		for (playerCount = 0; playerCount < playerList.Count; playerCount++) {
 
 			//add each player's rank to the rank list
@@ -142,8 +147,35 @@ public class GamePlayManager : MonoBehaviour {
 			}
 		}
 
+		List<int> tiedPlayerIds = new List<int>{ winningPlayerId };
+		int noOfTiedPlayers = 0;
+
+		//check if there are multiple players with same win rank for tie game
+		for (playerCount = 0; playerCount < playerList.Count; playerCount++) {
+
+			if (rankList [playerCount] == winRank) {
+				
+				noOfTiedPlayers++;
+				//print ("Number of tied players: " + noOfTiedPlayers);
+
+				if (playerList [playerCount].ID != winningPlayerId) {
+				
+					tiedPlayerIds.Add (playerList [playerCount].ID);
+				}
+			}
+		}
+
+		//print the tied player ids
+		if (tiedPlayerIds.Count > 1) {
+		
+			foreach (int tiedPlayerId in tiedPlayerIds) {
+				
+				print ("Tied player ID: " +tiedPlayerId);
+			}
+		}
+
 		int winPoints = 0;
-		//calculate the points to be added to winner
+		//calculate the points to be added to winner(s)
 		foreach (double rank in rankList) {
 		
 			if (rank != winRank) {
@@ -152,7 +184,8 @@ public class GamePlayManager : MonoBehaviour {
 			}
 		}
 
-		print ("winning player ID " + winningPlayerId + " earns " + winPoints + " points.");
+		//THESE SHOULD BE THE PLAYERS IN TIED PLAYER IDs !!!
+		print ("winning player ID(s) " + winningPlayerId + " earns " + winPoints + " points.");
 
 		//4kind
 		//myCards = new string[] {"4S", "3H", "4C","2S","4H","4D"};
