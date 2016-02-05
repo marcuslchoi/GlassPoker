@@ -3,18 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-
-
 public class GamePlayManager : MonoBehaviour {
 
 	//GENERATE A HAND FOR EACH PLAYER IN GAME. MAKE SURE THERE ARE 5 COMM CARDS.
 	//COMPARE THEM AND ADD POINTS TO THE WINNER
 
+	private PhotonView myPhotonView;
+
 	//these are the players that are present in the current game, identified by player number
 	public static List<int> playerIDs;
 
 	//use this to determine who comes next
-	public static List<GamePlayer> playerList;
+	public static List<Player> playerList;
 
 	public static List<int> cardIndices;
 
@@ -29,19 +29,28 @@ public class GamePlayManager : MonoBehaviour {
 	//the betting rounds and showdown
 	public static bool isPreFlop, isFlop, isPreTurn, isTurn, isPreRiver, isRiver, isShowdown; 
 
+	void OnJoinedRoom()
+	{
+		//instantiate the player object that just joined
+		GameObject player = PhotonNetwork.Instantiate("player", Vector3.zero, Quaternion.identity, 0);
+
+		myPhotonView = player.GetComponent<PhotonView>();
+	}
+
+
 	void Start () {
 
 
 		//player IDs (TO BE RETRIEVED FROM SERVER)
 		playerIDs = new List<int>{3, 6, 4};
 
-		GamePlayer player;
-		playerList = new List<GamePlayer>();
+		Player player;
+		playerList = new List<Player>();
 
-		//creating GamePlayer objects using player IDs
+		//creating Player objects using player IDs
 		foreach (int playerID in playerIDs) {
 		
-			player = new GamePlayer (playerID);
+			player = new Player (playerID);
 
 			playerList.Add (player);
 		
@@ -130,7 +139,7 @@ public class GamePlayManager : MonoBehaviour {
 		}
 
 		//print the player IDs and their respective cards
-		foreach (GamePlayer gamePlayer in playerList)
+		foreach (Player gamePlayer in playerList)
 		{
 			print("Player ID "+gamePlayer.ID+" has cards "+gamePlayer.hand.twoCardList[0]+ " "+gamePlayer.hand.twoCardList[1]);
 
@@ -224,8 +233,16 @@ public class GamePlayManager : MonoBehaviour {
 
 	void ShowButtons()
 	{
-		//show the buttons for the current player
+		//show the buttons for the current player, hide for previous player
 	
 	}
+
+	//call the RPC "Call" using the current player's PhotonView. Target all other players
+	//so everyone knows that current player called
+	void CallButtonPressed()
+	{
+		this.myPhotonView.RPC ("Call", PhotonTargets.All);	
+	}
+		
 		
 }
