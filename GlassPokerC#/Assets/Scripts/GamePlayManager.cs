@@ -53,8 +53,8 @@ public class GamePlayManager : MonoBehaviour {
 			cardIndices.Add(i);
 		}
 
+		//MAKE THIS AN RPC?
 		List<int> shuffledIndices = cardIndices;
-
 		//random shuffle the cards
 		for (int i = 0; i < shuffledIndices.Count; i++) {			
 			int temp = shuffledIndices[i];

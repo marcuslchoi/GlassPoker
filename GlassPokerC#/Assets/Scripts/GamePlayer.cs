@@ -24,7 +24,7 @@ public class GamePlayer : MonoBehaviour {
 
 	public int losses;
 
-	public bool folded;
+	public bool isFolded;
 
 	public bool isCurrentPlayer;
 	public bool isPreviousPlayer;
@@ -32,8 +32,7 @@ public class GamePlayer : MonoBehaviour {
 	//initializer
 	public GamePlayer(int id) {
 	
-		ID = id;
-	
+		ID = id;	
 	}
 
 	public void Call()
@@ -55,13 +54,14 @@ public class GamePlayer : MonoBehaviour {
 	public void Bet()
 	{
 		//show the slider and confirmation
+		//UPDATE LASTBETAMOUNT
 	}
 
 	public void Fold()
 	{
 
 		//CHECK FOR STRADDLE
-		folded = true;
+		isFolded = true;
 		//USE RPC
 	}
 

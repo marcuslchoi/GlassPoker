@@ -52,7 +52,7 @@ public class BettingTextDisplay : NetworkBehaviour {
 		//List<int> testPosList = GameObject.Find ("Player").GetComponent<Player> ().testPosList;
 
 		//make current small blind the host player
-		currentSmallBlindPos = activePlayerPosList [Player.playerNumbers [0]];
+		currentSmallBlindPos = 0;  //activePlayerPosList [Player.playerNumbers [0]];
 
 		//this is different for each player
 //		var myPlayerNumber = Player.myPlayerNumber;
