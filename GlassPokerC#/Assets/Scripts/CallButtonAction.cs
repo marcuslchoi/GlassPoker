@@ -38,6 +38,8 @@ public class CallButtonAction : MonoBehaviour {
 		btd.chipAmountText [BettingTextDisplay.currentPlayerPos].color = Color.yellow;
 		btd.chipAmountText [BettingTextDisplay.previousPlayerPos].color = Color.black;
 
+
+		//CHECK FOR STRADDLE
 		CheckBetEquality.CheckIfBetsAreEqual ();
 	}
 }
