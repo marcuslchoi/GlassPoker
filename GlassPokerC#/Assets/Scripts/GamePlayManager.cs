@@ -3,10 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class GamePlayManager : MonoBehaviour {
+public class GamePlayManager : Photon.MonoBehaviour {
 
 	//GENERATE A HAND FOR EACH PLAYER IN GAME. MAKE SURE THERE ARE 5 COMM CARDS.
 	//COMPARE THEM AND ADD POINTS TO THE WINNER
+
+	//CREATE A GAME OBJECT THAT STORES THE SHUFFLED CARDS, POT AMOUNT, CURRENT PLAYER, ETC!!!
 
 	private PhotonView myPhotonView;
 
@@ -16,30 +18,40 @@ public class GamePlayManager : MonoBehaviour {
 	//use this to determine who comes next
 	public static List<Player> playerList;
 
-	public static List<int> cardIndices;
+	public static List<string> commCards;
 
-	public static int potAmount;
+	static int indexOfShuffledDeck;
 
-	public static int currentPlayer, previousPlayer;
+	static List<List<string>> twoCardLists;
 
-	public static int lastBetAmount;
+	//only populated if get to showdown. Used to add points and win to winner(s)
+	static List<Player> winningPlayers;
 
-	public static int currentMinRaise;
+	//DO THESE METHODS ONLY WORK IF ATTACHED TO PLAYER OBJECT???
+	void OnPhotonPlayerConnected(PhotonPlayer player)
+	{
+		Debug.Log ("OnPhotonPlayerConnected: " + player);
+		print("new player ID: "+player.ID);
 
-	//the betting rounds and showdown
-	public static bool isPreFlop, isFlop, isPreTurn, isTurn, isPreRiver, isRiver, isShowdown; 
+	}
 
 	void OnJoinedRoom()
 	{
-		//instantiate the player object that just joined
-		GameObject player = PhotonNetwork.Instantiate("player", Vector3.zero, Quaternion.identity, 0);
+		//first need to create a network manager
+		//PhotonNetwork.playerList.Length;
+
+		//instantiate the player object that just joined (this player needs to have an associated ID)
+		GameObject player = PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity, 0);
 
 		myPhotonView = player.GetComponent<PhotonView>();
+
+		if (photonView.isMine) {
+		
+			gameObject.name = "me";
+		}
 	}
-
-
-	void Start () {
-
+		
+	public static void StartGame () {
 
 		//player IDs (TO BE RETRIEVED FROM SERVER)
 		playerIDs = new List<int>{3, 6, 4};
@@ -55,32 +67,16 @@ public class GamePlayManager : MonoBehaviour {
 			playerList.Add (player);
 		
 		}
-
-		//creating cardIndices list from 0-51. Represents a full deck
-		cardIndices = new List<int>();
-		for (int i = 0; i < 52; i++) {
-			cardIndices.Add(i);
-		}
-
-		//MAKE THIS AN RPC?
-		List<int> shuffledIndices = cardIndices;
-		//random shuffle the cards
-		for (int i = 0; i < shuffledIndices.Count; i++) {			
-			int temp = shuffledIndices[i];
-			int randomIndex = Random.Range(i, shuffledIndices.Count);
-			shuffledIndices[i] = shuffledIndices[randomIndex];
-			shuffledIndices[randomIndex] = temp;
-		}
 					
-		int indexOfShuffledIndices = new int ();
+		indexOfShuffledDeck = new int ();
 	
-		List<List<string>> twoCardLists = new List<List<string>>(playerList.Count);
+		twoCardLists = new List<List<string>>(playerList.Count);
 
 		List<string> twoCardList;
 
 		int playerIndex;
 
-		//for each player in game
+		//for each player in game, generate a 2-card hand
 		for (playerIndex = 0; playerIndex < playerList.Count; playerIndex++) {
 
 			//create a new object for list of lists to point to
@@ -89,33 +85,46 @@ public class GamePlayManager : MonoBehaviour {
 			//generate a 2 card hand
 			for (int i = 0; i < 2; i++) 
 			{
-				indexOfShuffledIndices = 2*playerIndex + i;
+				indexOfShuffledDeck = 2*playerIndex + i;
 
-				twoCardList.Add(Hand.cardNames [shuffledIndices [indexOfShuffledIndices]]);
+				twoCardList.Add(GameState.shuffledDeck [indexOfShuffledDeck]);
 
-				//print ("card " + i + " player "+playerIndex+": " + twoCardList [i]);
 			}
 
 			twoCardLists.Add (twoCardList);
 
 		}
 
+		//generate the community cards to add to 7 card hands
+		GenerateCommCards ();
+
+		//create the hand object for each player
+		GeneratePlayerHands ();
+
+		//ONLY CALL IF IT GETS TO SHOWDOWN
+		AddPointsToWinners ();
+
+	}
+
+	static void GenerateCommCards() {
+	
 		//generate the community cards
-		List<string> commCards = new List<string>(5);
+		commCards = new List<string>(5);
 
 		for (int i = 0; i < 5; i++) {
 
-			indexOfShuffledIndices++;
+			indexOfShuffledDeck++;
 
-			commCards.Add(Hand.cardNames[shuffledIndices[indexOfShuffledIndices]]);
+			commCards.Add(GameState.shuffledDeck[indexOfShuffledDeck]);
 
 			print ("comm card "+i+": " + commCards [i]);
 
 		}
 
-		//straight flush community cards for testing
-		//commCards = new List<string> {"AD","2D","3D","4D","5D"};
-			
+	}
+
+	static void GeneratePlayerHands() {
+
 		//each player's full hand of cards
 		string[] myCards;
 
@@ -123,7 +132,7 @@ public class GamePlayManager : MonoBehaviour {
 		Hand myHand;
 
 		//creating the Hand object for each player and assigning it to the player
-		for (playerIndex = 0; playerIndex < playerList.Count; playerIndex++) {
+		for (int playerIndex = 0; playerIndex < playerList.Count; playerIndex++) {
 
 			myCards = new string[7];
 
@@ -145,24 +154,28 @@ public class GamePlayManager : MonoBehaviour {
 
 		}
 
+	}
+
+	static void AddPointsToWinners() {
+	
 		//list of all ranks in the game
 		List<double> rankList = new List<double> ();
 
-		int winningPlayerId = new int();
+		winningPlayers = new List<Player>();
 
 		double winRank = 0;
 
 		//get the ranks, find winner
-		for (playerIndex = 0; playerIndex < playerList.Count; playerIndex++) {
+		for (int playerIndex = 0; playerIndex < playerList.Count; playerIndex++) {
 
 			//add each player's rank to the rank list
 			rankList.Add (playerList [playerIndex].hand.getRank ());
 
-			//finding the winning rank and winning player index
+			//finding the winning rank
 			if (rankList[playerIndex] > winRank)
 			{
 				winRank = playerList [playerIndex].hand.getRank ();
-				winningPlayerId = playerList [playerIndex].ID;
+
 			}
 		}
 
@@ -176,58 +189,33 @@ public class GamePlayManager : MonoBehaviour {
 			}
 		}
 
-		List<int> tiedPlayerIds = new List<int>{ winningPlayerId };
-		int noOfTiedPlayers = 0;
-
 		//check if there are multiple players with same win rank for tie game
 		//add points to winners and add 1 win
-		for (playerIndex = 0; playerIndex < playerList.Count; playerIndex++) {
+		for (int playerIndex = 0; playerIndex < playerList.Count; playerIndex++) {
 
 			if (rankList [playerIndex] == winRank) {
 
 				playerList [playerIndex].points += winPoints;
 				playerList [playerIndex].wins++;
 
-				noOfTiedPlayers++;
+				winningPlayers.Add (playerList [playerIndex]);
 
-				if (playerList [playerIndex].ID != winningPlayerId) {
-				
-					tiedPlayerIds.Add (playerList [playerIndex].ID);
-				}
 			}
 		}
-			
-		//print the tied player ids and add win points
-		if (tiedPlayerIds.Count > 1) {
 
-			foreach (int tiedPlayerId in tiedPlayerIds) {
+		//print the winning (or tied) player IDs and win points
+		if (winningPlayers.Count > 1) {
 
+			foreach (Player player in winningPlayers) {
 
-				print ("Tied player ID " + tiedPlayerId + " earns " + winPoints + " points.");
+				print ("Tied player ID " + player.ID + " earns " + winPoints + " points.");
 			}
 
 		//the winner
 		} else {
 
-			print ("winning player ID " + winningPlayerId + " earns " + winPoints + " points.");
+			print ("Winning player ID " + winningPlayers[0].ID + " earns " + winPoints + " points.");
 		}
-
-		//4kind
-		//myCards = new string[] {"4S", "3H", "4C","2S","4H","4D"};
-
-		//flush
-		//myCards = new string[] {"5S", "3S", "4S","2S","4H","QS"};
-
-		//low straight
-		//myCards = new string[] {"6C","3S","2H","4D","AS","3D","5S"};
-
-		//straight flush
-		//myCards = new string[] {"AD","2D","JC","3D","4D","5D","7H"};
-
-		//myCards = new string[] {"6C","3C","2C","4C","AS","3C","5C"};
-	
-		//2 pair
-		//myCards = new string[] {"6C","6H","3S","4C","AS","3C","AC"};
 
 	}
 

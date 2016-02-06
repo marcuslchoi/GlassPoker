@@ -41,7 +41,7 @@ public class Player : MonoBehaviour {
 
 		//add back my previous bet to my chips stack
 		myChipAmount += myBetAmount;
-		myBetAmount = GamePlayManager.lastBetAmount;
+		myBetAmount = GameState.lastBetAmount;
 
 		myChipAmount -= myBetAmount;
 
