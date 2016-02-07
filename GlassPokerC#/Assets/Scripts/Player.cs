@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Photon;
 
-public class Player : MonoBehaviour {
+public class Player : Photon.MonoBehaviour {
 
 	//STORE EVERY 2 CARD (7 CARD?) HAND IN A LIST
 	//ALSO STORE A LIST WITH "W","L","F" CORRESPONDING TO HAND?

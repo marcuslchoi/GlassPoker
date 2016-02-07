@@ -22,10 +22,10 @@ public class GameState : Photon.MonoBehaviour {
 	
 		ShuffleDeck ();
 
-		GamePlayManager.StartGame ();
+//		GamePlayManager.StartGame ();
 	}
 
-	void ShuffleDeck () {
+	public void ShuffleDeck () {
 
 		shuffledDeck = Hand.cardNames.ToList();
 		//random shuffle the cards

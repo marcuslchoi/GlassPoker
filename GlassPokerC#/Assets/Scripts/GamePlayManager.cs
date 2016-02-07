@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Photon;
 
-public class GamePlayManager : Photon.MonoBehaviour {
+public class GamePlayManager : Photon.PunBehaviour {
 
 	//GENERATE A HAND FOR EACH PLAYER IN GAME. MAKE SURE THERE ARE 5 COMM CARDS.
 	//COMPARE THEM AND ADD POINTS TO THE WINNER
@@ -13,7 +14,7 @@ public class GamePlayManager : Photon.MonoBehaviour {
 	private PhotonView myPhotonView;
 
 	//these are the players that are present in the current game, identified by player number
-	public static List<int> playerIDs;
+	public static List<int> playerIDs = new List<int>();
 
 	//use this to determine who comes next
 	public static List<Player> playerList;
@@ -27,34 +28,67 @@ public class GamePlayManager : Photon.MonoBehaviour {
 	//only populated if get to showdown. Used to add points and win to winner(s)
 	static List<Player> winningPlayers;
 
-	//DO THESE METHODS ONLY WORK IF ATTACHED TO PLAYER OBJECT???
+	//connect
+	void Start () {
+		PhotonNetwork.ConnectUsingSettings ("0.1");
+	}
+
+	void OnGUI()
+	{
+		GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
+	}
+
+	//join a random room
+	public override void OnJoinedLobby()
+	{
+		RoomOptions roomOptions = new RoomOptions() { isVisible = false, maxPlayers = 9 };
+		PhotonNetwork.JoinOrCreateRoom("Room", roomOptions, TypedLobby.Default);
+	}
+
+	//runs only when non-local player enters
 	void OnPhotonPlayerConnected(PhotonPlayer player)
 	{
 		Debug.Log ("OnPhotonPlayerConnected: " + player);
 		print("new player ID: "+player.ID);
 
+		playerIDs.Add (player.ID); 
+
+		if (PhotonNetwork.playerList.Length > 1) {
+
+			StartGame ();
+		}
+
 	}
 
+	//when local player joins the room
 	void OnJoinedRoom()
 	{
-		//first need to create a network manager
-		//PhotonNetwork.playerList.Length;
+
+		print ("player with ID "+PhotonNetwork.player.ID+" joined room");
+
+		//HOW DO I USE PHOTON PLAYERS WITH MY OWN PLAYER PROPERTIES???
+		print("Number of Photon Players: "+ PhotonNetwork.playerList.Length);
 
 		//instantiate the player object that just joined (this player needs to have an associated ID)
 		GameObject player = PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity, 0);
 
 		myPhotonView = player.GetComponent<PhotonView>();
 
-		if (photonView.isMine) {
+		//use the Photon Player IDs as player IDs to create player objects
+		playerIDs.Add (PhotonNetwork.player.ID); 
+
+		if (PhotonNetwork.playerList.Length > 1) {
 		
-			gameObject.name = "me";
+			StartGame ();
 		}
+
+//		if (photonView.isMine) {
+//		
+//			gameObject.name = "me";
+//		}
 	}
 		
 	public static void StartGame () {
-
-		//player IDs (TO BE RETRIEVED FROM SERVER)
-		playerIDs = new List<int>{3, 6, 4};
 
 		Player player;
 		playerList = new List<Player>();
@@ -67,9 +101,10 @@ public class GamePlayManager : Photon.MonoBehaviour {
 			playerList.Add (player);
 		
 		}
-					
+
 		indexOfShuffledDeck = new int ();
 	
+		//list of 2 card lists 
 		twoCardLists = new List<List<string>>(playerList.Count);
 
 		List<string> twoCardList;
@@ -98,7 +133,7 @@ public class GamePlayManager : Photon.MonoBehaviour {
 		//generate the community cards to add to 7 card hands
 		GenerateCommCards ();
 
-		//create the hand object for each player
+		//create the hand object for each player (also creates player.hand.twoCardList)
 		GeneratePlayerHands ();
 
 		//ONLY CALL IF IT GETS TO SHOWDOWN
