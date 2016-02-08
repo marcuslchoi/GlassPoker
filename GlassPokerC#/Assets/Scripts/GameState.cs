@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.UI;
 
 public class GameState : Photon.MonoBehaviour {
 
@@ -22,7 +23,6 @@ public class GameState : Photon.MonoBehaviour {
 	
 		ShuffleDeck ();
 
-//		GamePlayManager.StartGame ();
 	}
 
 	public void ShuffleDeck () {

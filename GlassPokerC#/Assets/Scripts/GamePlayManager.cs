@@ -56,6 +56,11 @@ public class GamePlayManager : Photon.PunBehaviour {
 		if (PhotonNetwork.playerList.Length > 1) {
 
 			StartGame ();
+
+//			CheckBetEquality.CheckIfBetsAreEqual ();
+//
+//			//NOT WORKING ON OTHERS
+//			this.myPhotonView.RPC ("UpdateGSText", PhotonTargets.All);
 		}
 
 	}

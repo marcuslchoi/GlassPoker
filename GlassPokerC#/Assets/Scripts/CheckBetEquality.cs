@@ -8,26 +8,26 @@ public class CheckBetEquality : MonoBehaviour {
 	//all bet amounts combined
 	static int totalBetsAmount;
 
+	public static bool betsAreEqual = false;
+
 	//BettingTextDisplay btd = GameObject.Find ("Chip and Bet Amount Texts").GetComponent<BettingTextDisplay> ();
 
 	public static void CheckIfBetsAreEqual()
 	{
-		BettingTextDisplay btd = GameObject.Find ("Chip and Bet Amount Texts").GetComponent<BettingTextDisplay> ();
-		//the bet amount of each person
+
 		int betAmount = 0;
 
-		bool betsAreEqual = false;
-
 		//check if all bets are equal. If so, move bets to pot and begin next round or showdown
-		for (var i = 0; i < BettingTextDisplay.activePlayerPosList.Count-1; i++) {
+		for (var i = 0; i < GamePlayManager.playerList.Count-1; i++) {
 
-			if (btd.betAmountText [BettingTextDisplay.activePlayerPosList[i]].text != btd.betAmountText [BettingTextDisplay.activePlayerPosList[i + 1]].text) {
+			if (GamePlayManager.playerList[i].myBetAmount != GamePlayManager.playerList[i+1].myBetAmount) {
 			
 				break;
 			
-			} else if (i == BettingTextDisplay.activePlayerPosList.Count - 2) {
+			//checked the last 2 players and they have equal bet amount
+			} else if (i == GamePlayManager.playerList.Count - 2) {
 				
-				betAmount = int.Parse(btd.betAmountText[BettingTextDisplay.activePlayerPosList[i]].text);
+				betAmount = GamePlayManager.playerList[i].myBetAmount;
 
 				betsAreEqual = true;
 			}
@@ -36,9 +36,10 @@ public class CheckBetEquality : MonoBehaviour {
 		//if bets are all equal, move the bets to pot
 		if (betsAreEqual) {
 
-			btd.chipAmountText [BettingTextDisplay.currentPlayerPos].color = Color.black;
+			//btd.chipAmountText [BettingTextDisplay.currentPlayerPos].color = Color.black;
 
-			totalBetsAmount = betAmount * BettingTextDisplay.activePlayerPosList.Count;
+			//total of all bets combined
+			totalBetsAmount = betAmount * GamePlayManager.playerList.Count;
 
 			GameObject cbeObject = GameObject.Find ("CheckBetEquality");
 			CheckBetEquality cbe = cbeObject.GetComponent<CheckBetEquality> ();
@@ -51,15 +52,17 @@ public class CheckBetEquality : MonoBehaviour {
 
 	public void MoveBetsToPot()
 	{
-		BettingTextDisplay btd = GameObject.Find ("Chip and Bet Amount Texts").GetComponent<BettingTextDisplay> ();
+		//BettingTextDisplay btd = GameObject.Find ("Chip and Bet Amount Texts").GetComponent<BettingTextDisplay> ();
 		//add all bets to pot
 		BettingTextDisplay.potAmountText.text = (int.Parse (BettingTextDisplay.potAmountText.text) + totalBetsAmount).ToString (); 
 
-		//removing bet amount texts from table bets go into pot
-		for (var i = 0; i < BettingTextDisplay.activePlayerPosList.Count; i++) {
+		GameState.potAmount += totalBetsAmount;
 
-			btd.betAmountText [BettingTextDisplay.activePlayerPosList [i]].text = "";
-		}
+		//removing bet amounts from table (bets go into pot)
+		for (var i = 0; i < GamePlayManager.playerList.Count; i++) {
+
+			GamePlayManager.playerList [i].myBetAmount = 0;
+		}	
 
 		//ANIMATE THE BETS TO THE POT??
 		print("moved bets to pot " +totalBetsAmount);
