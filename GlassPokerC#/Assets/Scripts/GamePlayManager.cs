@@ -196,7 +196,7 @@ public class GamePlayManager : Photon.PunBehaviour {
 
 	}
 
-	static void AddPointsToWinners() {
+	public static void AddPointsToWinners() {
 	
 		//list of all ranks in the game
 		List<double> rankList = new List<double> ();
