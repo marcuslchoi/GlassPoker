@@ -1,0 +1,35 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{3D0A0F91-E15B-FDD6-EBB0-9B3FBEA3D8DD}") = "GlassPokerC#", "Assembly-CSharp-firstpass.csproj", "{19A6BD47-E086-A4AF-69E5-663C1677EED4}"
+EndProject
+Project("{3D0A0F91-E15B-FDD6-EBB0-9B3FBEA3D8DD}") = "GlassPokerC#", "Assembly-CSharp.csproj", "{4F3E8796-056D-7118-1A46-33C752D922F2}"
+EndProject
+Project("{3D0A0F91-E15B-FDD6-EBB0-9B3FBEA3D8DD}") = "GlassPokerC#", "Assembly-CSharp-Editor.csproj", "{A88C03DF-85C5-F691-3491-0605AD2A819F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{19A6BD47-E086-A4AF-69E5-663C1677EED4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19A6BD47-E086-A4AF-69E5-663C1677EED4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19A6BD47-E086-A4AF-69E5-663C1677EED4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19A6BD47-E086-A4AF-69E5-663C1677EED4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F3E8796-056D-7118-1A46-33C752D922F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F3E8796-056D-7118-1A46-33C752D922F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F3E8796-056D-7118-1A46-33C752D922F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F3E8796-056D-7118-1A46-33C752D922F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A88C03DF-85C5-F691-3491-0605AD2A819F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A88C03DF-85C5-F691-3491-0605AD2A819F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A88C03DF-85C5-F691-3491-0605AD2A819F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A88C03DF-85C5-F691-3491-0605AD2A819F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
