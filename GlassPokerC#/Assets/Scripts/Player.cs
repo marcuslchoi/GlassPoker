@@ -38,6 +38,14 @@ public class Player : Photon.MonoBehaviour {
 		ID = id;	
 	}
 
+	void Update()
+	{
+		if (photonView.isMine) {
+		
+			gameObject.name = "me";
+		}
+	}
+
 	[PunRPC]
 	public void Call()
 	{
@@ -203,11 +211,17 @@ public class Player : Photon.MonoBehaviour {
 		
 		}
 	}
-
+		
 	public void Check()
 	{
 		//pass to next player
 	}
+
+//	[PunRPC]
+//	public void AddPlayerToList()
+//	{
+//		GamePlayManager.playerList.Add (this);
+//	}
 
 //	[PunRPC]
 //	public void UpdateGSText() {

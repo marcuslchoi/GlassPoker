@@ -19,13 +19,15 @@ public class GamePlayManager : Photon.PunBehaviour {
 
 	//MOVE THIS TO GAME STATE
 	//use this to determine who comes next
-	public static List<Player> playerList;
+	public static List<Player> playerList = new List<Player>();
 
 	public static List<string> commCards;
 
 	static int indexOfShuffledDeck;
 
 	static List<List<string>> twoCardLists;
+
+	PhotonPlayer pp;
 
 	//only populated if get to showdown. Used to add points and win to winner(s)
 	static List<Player> winningPlayers;
@@ -38,6 +40,7 @@ public class GamePlayManager : Photon.PunBehaviour {
 	void OnGUI()
 	{
 		GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
+
 	}
 
 	//join a random room
@@ -48,50 +51,111 @@ public class GamePlayManager : Photon.PunBehaviour {
 	}
 
 	//runs only when non-local player enters
-	void OnPhotonPlayerConnected(PhotonPlayer player)
+	void OnPhotonPlayerConnected(PhotonPlayer photonPlayer)
 	{
-		Debug.Log ("OnPhotonPlayerConnected: " + player);
-		print("new player ID: "+player.ID);
+		pp = photonPlayer;
 
-		playerIDs.Add (player.ID); 
+		Debug.Log ("OnPhotonPlayerConnected: " + photonPlayer);
+		print("new player ID: "+photonPlayer.ID);
+
+		Text otherPlayerText = GameObject.Find ("OtherPlayerNumber").GetComponent<Text> ();
+
+		otherPlayerText.text = "new player ID: "+photonPlayer.ID;
+
+		playerIDs.Add (photonPlayer.ID); 
+
+//		UpdatePlayerList ();
 
 		if (PhotonNetwork.playerList.Length > 1) {
 
-			StartGame ();
+
+			//DOESN'T WORK
+//			Player otherPlayer = GameObject.Find ("Player(Clone)").GetComponent<Player> ();
+//
+//			otherPlayer.ID = photonPlayer.ID;
+//
+//			playerList.Add (otherPlayer);
+
+//			StartGame ();
 
 //			CheckBetEquality.CheckIfBetsAreEqual ();
 //
-//			//NOT WORKING ON OTHERS
+//			//NOT WORKING ON OTHERS. ONLY UPDATES MY TEXT, OTHERS KNOW THAT MY TEXT IS UPDATED
 //			this.myPhotonView.RPC ("UpdateGSText", PhotonTargets.All);
 		}
 
+	}
+
+	void Update() {
+	
+		while (playerList.Count < 2) {
+
+			Player otherPlayer = GameObject.Find ("Player(Clone)").GetComponent<Player> ();
+
+			otherPlayer.ID = pp.ID;
+
+			playerList.Add (otherPlayer);
+		}
+
+		if (playerList.Count > 1) {
+		
+			StartGame ();
+		}
+	
 	}
 
 	//when local player joins the room
 	void OnJoinedRoom()
 	{
 
+		if (PhotonNetwork.playerList.Length > 1) {
+
+			Text otherPlayerText = GameObject.Find ("OtherPlayerNumber").GetComponent<Text> ();
+			otherPlayerText.text = "Other player already in room with ID: "+PhotonNetwork.playerList[0].ID;
+
+		}
+
 		print ("player with ID "+PhotonNetwork.player.ID+" joined room");
+
+		Text myPlayerText = GameObject.Find ("MyPlayerNumber").GetComponent<Text> ();
+
+		myPlayerText.text = "player with ID " + PhotonNetwork.player.ID + " joined room";
 
 		//HOW DO I USE PHOTON PLAYERS WITH MY OWN PLAYER PROPERTIES???
 		print("Number of Photon Players: "+ PhotonNetwork.playerList.Length);
 
 		//instantiate the player object that just joined (this player needs to have an associated ID)
-		GameObject player = PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity, 0);
+		GameObject playerGO = PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity, 0);
+
 
 		//!!!!!!!!!!!!!!
 		//TRY TO ADD THIS PLAYER TO PLAYERLIST INSTEAD OF CREATING A NEW PLAYER WITH SAME ID
 
-		myPhotonView = player.GetComponent<PhotonView>();
+		myPhotonView = playerGO.GetComponent<PhotonView>();
+
+		Player playerScript = playerGO.GetComponent<Player> ();
+
+//		AddingPlayerToList ();
+		playerList.Add (playerScript);
+
+		playerScript.ID = PhotonNetwork.player.ID;
+
+		playerScript.myBetAmount = 2;
+
+		Text myBetAmountText = GameObject.Find ("MyBetAmount").GetComponent<Text> ();
+		myBetAmountText.text = playerScript.myBetAmount.ToString ();
+
+		//print (playerScript.ID);
 
 		//use the Photon Player IDs as player IDs to create player objects
-		playerIDs.Add (PhotonNetwork.player.ID); 
+//		playerIDs.Add (PhotonNetwork.player.ID); 
 
 		if (PhotonNetwork.playerList.Length > 1) {
 		
 			StartGame ();
 		}
 
+		//script must be attached to the player for this to work
 //		if (photonView.isMine) {
 //		
 //			gameObject.name = "me";
@@ -100,17 +164,21 @@ public class GamePlayManager : Photon.PunBehaviour {
 		
 	public static void StartGame () {
 
-		Player player;
-		playerList = new List<Player>();
+		print ("number of players in playerList is " + playerList.Count);
 
-		//creating Player objects using player IDs
-		foreach (int playerID in playerIDs) {
-		
-			player = new Player (playerID);
+//		Player player;
+//		playerList = new List<Player>();
 
-			playerList.Add (player);
-		
-		}
+
+
+//		//creating Player objects using player IDs
+//		foreach (int playerID in playerIDs) {
+//		
+//			player = new Player (playerID);
+//
+//			playerList.Add (player);
+//		
+//		}
 
 		indexOfShuffledDeck = new int ();
 	
@@ -295,6 +363,12 @@ public class GamePlayManager : Photon.PunBehaviour {
 		
 		this.myPhotonView.RPC ("ConfirmBet", PhotonTargets.All);
 	}
+
+//	public void AddingPlayerToList()
+//	{
+//		this.myPhotonView.RPC ("AddPlayerToList", PhotonTargets.All);
+//
+//	}
 		
 		
 }
