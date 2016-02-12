@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ public class GameState : Photon.MonoBehaviour {
 	public static Player currentPlayer;
 	public static Player dealer, smallBlindPlayer, bigBlindPlayer;
 
-	//straddle only exists if he straddle bets before the cards are dealt
+	//straddle only exists if the straddle decides to bet before the cards are dealt
 	public static Player straddlePlayer;
 
 	public static int smallBlind;
@@ -23,7 +23,11 @@ public class GameState : Photon.MonoBehaviour {
 	public static int currentMinRaise;
 
 	//the betting rounds and showdown (ENUM???)
-	public static bool isPreFlop, isFlop, isPreTurn, isTurn, isPreRiver, isRiver, isShowdown; 
+	//public enum LoginPathways {deviceId = 1, pf_username = 2, facebook = 3, gameCenter = 4, pf_email = 5, steam = 6, googlePlus = 7  } 
+
+	public enum Rounds {isPreFlop = 1, isFlop = 2, isPreTurn = 3, isTurn = 4, isPreRiver = 5, isRiver = 6, isShowdown = 7}
+
+	//public static bool isPreFlop, isFlop, isPreTurn, isTurn, isPreRiver, isRiver, isShowdown; 
 
 	void Start() {
 

@@ -127,10 +127,7 @@ public class GamePlayManager : Photon.PunBehaviour {
 		//instantiate the player object that just joined (this player needs to have an associated ID)
 		GameObject playerGO = PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity, 0);
 
-
-		//!!!!!!!!!!!!!!
-		//TRY TO ADD THIS PLAYER TO PLAYERLIST INSTEAD OF CREATING A NEW PLAYER WITH SAME ID
-
+		//ADDING THIS PLAYER TO PLAYERLIST INSTEAD OF CREATING A NEW PLAYER WITH SAME ID
 		myPhotonView = playerGO.GetComponent<PhotonView>();
 
 		Player playerScript = playerGO.GetComponent<Player> ();
@@ -171,7 +168,7 @@ public class GamePlayManager : Photon.PunBehaviour {
 
 
 
-//		//creating Player objects using player IDs
+//		//creating new Player objects using PhotonPlayer IDs
 //		foreach (int playerID in playerIDs) {
 //		
 //			player = new Player (playerID);

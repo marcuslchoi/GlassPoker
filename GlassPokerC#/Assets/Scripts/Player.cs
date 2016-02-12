@@ -24,15 +24,7 @@ public class Player : Photon.MonoBehaviour {
 
 	public int losses;
 
-	//public bool isFolded;
-
-	//DONT NEED THIS ANYMORE
-	//public bool isCurrentPlayer;
-	//public bool isPreviousPlayer;
-
-	//public bool isStraddle;
-
-	//initializer
+	//initializer (NEED THIS??)
 	public Player(int id) {
 	
 		ID = id;	
@@ -62,15 +54,16 @@ public class Player : Photon.MonoBehaviour {
 		Player newCurrentPlayer;
 
 		//make next player the possible new current player
-		if (GamePlayManager.playerList.IndexOf (this) == GamePlayManager.playerList.Count - 1) {
+		if (GamePlayManager.playerList.IndexOf (GameState.currentPlayer) == GamePlayManager.playerList.Count - 1) {
 
 			newCurrentPlayer = GamePlayManager.playerList [0];
 
 		} else {
 		
-			newCurrentPlayer = GamePlayManager.playerList [GamePlayManager.playerList.IndexOf (this) + 1];
+			newCurrentPlayer = GamePlayManager.playerList [GamePlayManager.playerList.IndexOf (GameState.currentPlayer) + 1];
 		}
 
+		//NEED CHECK FOR BIG BLIND IF STRADDLE DOES NOT EXIST
 		//check if new current player is straddle. If not, check if bets are equal
 		//ALSO CHECK IF PRE-FLOP?
 		if (newCurrentPlayer == GameState.straddlePlayer) {
@@ -110,10 +103,10 @@ public class Player : Photon.MonoBehaviour {
 		GameState.lastBetAmount = betSliderValInt;
 
 		//new chip amount = chip amount + bet amount - new bet amount (betslider's value)
-		myChipAmount = myChipAmount + myBetAmount - betSliderValInt;
+		myChipAmount = myChipAmount + myBetAmount - GameState.lastBetAmount;
 
 		//new bet amount of current player becomes the slider value
-		myBetAmount = betSliderValInt;
+		myBetAmount = GameState.lastBetAmount;
 
 
 		//go to next player as current player
@@ -128,18 +121,16 @@ public class Player : Photon.MonoBehaviour {
 
 		//hide slider, slider text, confirm button
 		sliderObject.SetActive(false);
+		GameObject.Find ("ConfirmBetButton").SetActive (false);
+		GameObject.Find ("SliderValText").GetComponent<Text> ().text = "";
 
-		//sliderValText.text = "";
+		//CHECK FOR STRADDLE/BIG BLIND IF GAME STATE IS PREFLOP. CHECK BET EQUALITY IF NOT
 
-		gameObject.SetActive (false);	//confirm bet button
 	}
 
 	[PunRPC]
 	public void Fold()
 	{
-		//NEED THESE??
-		//isCurrentPlayer = false;
-		//isFolded = true;
 
 		//ANIMATE CARDS TO DEALER
 
@@ -150,10 +141,10 @@ public class Player : Photon.MonoBehaviour {
 		//ANIMATE BET CHIPS TO POT
 
 		//save index of folded player
-		int indexOfFoldedPlayer = GamePlayManager.playerList.IndexOf (this);
+		int indexOfFoldedPlayer = GamePlayManager.playerList.IndexOf (GameState.currentPlayer);
 
 		//remove the player from playerList
-		GamePlayManager.playerList.RemoveAt (GamePlayManager.playerList.IndexOf (this));
+		GamePlayManager.playerList.RemoveAt (GamePlayManager.playerList.IndexOf (GameState.currentPlayer));
 
 		//if only 1 player left, he is the winner
 		if (GamePlayManager.playerList.Count == 1) {
@@ -176,13 +167,15 @@ public class Player : Photon.MonoBehaviour {
 			Player newCurrentPlayer;
 
 			//make next player the possible new current player
-			if (GamePlayManager.playerList.IndexOf (this) == GamePlayManager.playerList.Count - 1) {
+			//if the folded player was at the last index of the playerList before folding
+			if (indexOfFoldedPlayer == GamePlayManager.playerList.Count) {
 
 				newCurrentPlayer = GamePlayManager.playerList [0];
 
+			//new current player is at same index of folded player in the smaller playerList
 			} else {
-
-				newCurrentPlayer = GamePlayManager.playerList [GamePlayManager.playerList.IndexOf (this) + 1];
+				
+				newCurrentPlayer = GamePlayManager.playerList [indexOfFoldedPlayer];
 			}
 		
 
@@ -212,9 +205,38 @@ public class Player : Photon.MonoBehaviour {
 		}
 	}
 		
+	[PunRPC]
 	public void Check()
 	{
-		//pass to next player
+		//can't check during pre-flop unless you are straddle/big blind
+
+		//move the current player to the next player if bet is equal to previous bet
+		if (GameState.currentPlayer.myBetAmount == GameState.lastBetAmount) {
+
+			if (CheckBetEquality.betsAreEqual) {
+			
+				CheckBetEquality.MoveBetsToPot ();
+
+				//GO TO THE NEXT GAMESTATE.ROUNDS!!!!
+			}
+
+			//the possible new current player (if bets are not equal or if he is the straddle)
+			Player newCurrentPlayer;
+
+			//make next player the possible new current player
+			if (GamePlayManager.playerList.IndexOf (GameState.currentPlayer) == GamePlayManager.playerList.Count - 1) {
+
+				newCurrentPlayer = GamePlayManager.playerList [0];
+
+			} else {
+
+				newCurrentPlayer = GamePlayManager.playerList [GamePlayManager.playerList.IndexOf (GameState.currentPlayer) + 1];
+			}
+		
+		} else {
+		
+			//CHECK BUTTON DOES NOTHING IF MY BET DOES NOT EQUAL PREVIOUS BET
+		}
 	}
 
 //	[PunRPC]

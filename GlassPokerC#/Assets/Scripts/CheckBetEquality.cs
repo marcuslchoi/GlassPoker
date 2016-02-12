@@ -50,7 +50,7 @@ public class CheckBetEquality : MonoBehaviour {
 	
 	}
 
-	public void MoveBetsToPot()
+	public static void MoveBetsToPot()
 	{
 		//BettingTextDisplay btd = GameObject.Find ("Chip and Bet Amount Texts").GetComponent<BettingTextDisplay> ();
 		//add all bets to pot
