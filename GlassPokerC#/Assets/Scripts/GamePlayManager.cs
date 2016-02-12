@@ -10,14 +10,11 @@ public class GamePlayManager : Photon.PunBehaviour {
 	//GENERATE A HAND FOR EACH PLAYER IN GAME. MAKE SURE THERE ARE 5 COMM CARDS.
 	//COMPARE THEM AND ADD POINTS TO THE WINNER
 
-	//CREATE A GAME OBJECT THAT STORES THE SHUFFLED CARDS, POT AMOUNT, CURRENT PLAYER, ETC!!!
-
 	private PhotonView myPhotonView;
 
 	//these are the players that are present in the current game, identified by player number
 	public static List<int> playerIDs = new List<int>();
 
-	//MOVE THIS TO GAME STATE
 	//use this to determine who comes next
 	public static List<Player> playerList = new List<Player>();
 
@@ -88,6 +85,7 @@ public class GamePlayManager : Photon.PunBehaviour {
 
 	void Update() {
 	
+		//add the non-local player to playerList when he joins
 		while (playerList.Count < 2) {
 
 			Player otherPlayer = GameObject.Find ("Player(Clone)").GetComponent<Player> ();
@@ -151,22 +149,21 @@ public class GamePlayManager : Photon.PunBehaviour {
 		
 			StartGame ();
 		}
-
-		//script must be attached to the player for this to work
-//		if (photonView.isMine) {
-//		
-//			gameObject.name = "me";
-//		}
 	}
 		
 	public static void StartGame () {
 
 		print ("number of players in playerList is " + playerList.Count);
 
+		//ANIMATE THE SHUFFLING DECK WITH SOUND
+		GameState.ShuffleDeck ();
+
+		GameState.currentRound = GameState.Rounds.isPreDeal;
+
+		//DEAL THE CARDS HERE TO ONLY THE PLAYERS PRESENT
+
 //		Player player;
 //		playerList = new List<Player>();
-
-
 
 //		//creating new Player objects using PhotonPlayer IDs
 //		foreach (int playerID in playerIDs) {
@@ -176,6 +173,8 @@ public class GamePlayManager : Photon.PunBehaviour {
 //			playerList.Add (player);
 //		
 //		}
+
+//----------DEALING THE CARDS TO PLAYERS---------------------------// 
 
 		indexOfShuffledDeck = new int ();
 	

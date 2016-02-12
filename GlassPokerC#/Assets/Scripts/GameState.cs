@@ -22,14 +22,12 @@ public class GameState : Photon.MonoBehaviour {
 
 	public static int currentMinRaise;
 
-	//the betting rounds and showdown (ENUM???)
-	//public enum LoginPathways {deviceId = 1, pf_username = 2, facebook = 3, gameCenter = 4, pf_email = 5, steam = 6, googlePlus = 7  } 
-
-	public enum Rounds {isPreFlop = 1, isFlop = 2, isPreTurn = 3, isTurn = 4, isPreRiver = 5, isRiver = 6, isShowdown = 7}
+	//the betting rounds and showdown
+	public enum Rounds {isPreDeal = 0, isPreFlop = 1, isFlop = 2, isPreTurn = 3, isTurn = 4, isPreRiver = 5, isRiver = 6, isShowdown = 7}
 
 	public static Rounds currentRound;
 
-	//public static bool isPreFlop, isFlop, isPreTurn, isTurn, isPreRiver, isRiver, isShowdown; 
+	//public static bool isPreDeal, isPreFlop, isFlop, isPreTurn, isTurn, isPreRiver, isRiver, isShowdown; 
 
 	void Start() {
 
@@ -37,11 +35,11 @@ public class GameState : Photon.MonoBehaviour {
 
 		currentMinRaise = 2 * smallBlindAmount;
 	
-		ShuffleDeck ();
+		//ShuffleDeck ();
 
 	}
 
-	public void ShuffleDeck () {
+	public static void ShuffleDeck () {
 
 		shuffledDeck = Hand.cardNames.ToList();
 		//random shuffle the cards

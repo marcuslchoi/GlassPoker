@@ -31,7 +31,7 @@ public class DealCard : MonoBehaviour {
 	void Update () {
 
 		float timeDelay = 0.05f;
-		//Deal();
+
 		Invoke ("Deal", timeDelay*order);
 
 	}

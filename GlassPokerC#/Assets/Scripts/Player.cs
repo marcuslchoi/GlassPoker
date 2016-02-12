@@ -7,8 +7,6 @@ using UnityEngine.UI;
 
 public class Player : Photon.MonoBehaviour {
 
-
-
 	public int ID;
 
 	public int myChipAmount;
@@ -32,6 +30,7 @@ public class Player : Photon.MonoBehaviour {
 
 	void Update()
 	{
+		//rename my player object "me"
 		if (photonView.isMine) {
 		
 			gameObject.name = "me";
