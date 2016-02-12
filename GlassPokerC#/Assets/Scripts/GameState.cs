@@ -13,10 +13,10 @@ public class GameState : Photon.MonoBehaviour {
 	public static Player currentPlayer;
 	public static Player dealer, smallBlindPlayer, bigBlindPlayer;
 
-	//straddle only exists if the straddle decides to bet before the cards are dealt
+	//straddle only exists if he decides to bet before the cards are dealt
 	public static Player straddlePlayer;
 
-	public static int smallBlind;
+	public static int smallBlindAmount;
 
 	public static int lastBetAmount;
 
@@ -27,13 +27,15 @@ public class GameState : Photon.MonoBehaviour {
 
 	public enum Rounds {isPreFlop = 1, isFlop = 2, isPreTurn = 3, isTurn = 4, isPreRiver = 5, isRiver = 6, isShowdown = 7}
 
+	public static Rounds currentRound;
+
 	//public static bool isPreFlop, isFlop, isPreTurn, isTurn, isPreRiver, isRiver, isShowdown; 
 
 	void Start() {
 
-		smallBlind = 1;
+		smallBlindAmount = 1;
 
-		currentMinRaise = 2 * smallBlind;
+		currentMinRaise = 2 * smallBlindAmount;
 	
 		ShuffleDeck ();
 
@@ -50,11 +52,6 @@ public class GameState : Photon.MonoBehaviour {
 			shuffledDeck[randomIndex] = temp;
 
 		}
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
 	
 	}
 }

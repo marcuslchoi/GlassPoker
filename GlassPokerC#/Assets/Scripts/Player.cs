@@ -208,29 +208,36 @@ public class Player : Photon.MonoBehaviour {
 	[PunRPC]
 	public void Check()
 	{
+		//CHECK BUTTON SHOULD NOT BE VISIBLE IF PLAYER CAN'T CHECK
+
 		//can't check during pre-flop unless you are straddle/big blind
 
 		//move the current player to the next player if bet is equal to previous bet
 		if (GameState.currentPlayer.myBetAmount == GameState.lastBetAmount) {
 
-			if (CheckBetEquality.betsAreEqual) {
+			//if all bets are equal, move the bets to the pot and go to the next round
+			if (CheckBetEquality.CheckIfBetsAreEqual ()) {
 			
-				CheckBetEquality.MoveBetsToPot ();
+				GameObject cbeObject = GameObject.Find ("CheckBetEquality");
+				CheckBetEquality cbe = cbeObject.GetComponent<CheckBetEquality> ();
+
+				//move bets to pot after delay
+				cbe.Invoke ("MoveBetsToPot", 2f);
 
 				//GO TO THE NEXT GAMESTATE.ROUNDS!!!!
-			}
-
-			//the possible new current player (if bets are not equal or if he is the straddle)
-			Player newCurrentPlayer;
-
-			//make next player the possible new current player
-			if (GamePlayManager.playerList.IndexOf (GameState.currentPlayer) == GamePlayManager.playerList.Count - 1) {
-
-				newCurrentPlayer = GamePlayManager.playerList [0];
-
+			
+			//assign the new current player
 			} else {
 
-				newCurrentPlayer = GamePlayManager.playerList [GamePlayManager.playerList.IndexOf (GameState.currentPlayer) + 1];
+				//make next player the new current player
+				if (GamePlayManager.playerList.IndexOf (GameState.currentPlayer) == GamePlayManager.playerList.Count - 1) {
+
+					GameState.currentPlayer = GamePlayManager.playerList [0];
+
+				} else {
+
+					GameState.currentPlayer = GamePlayManager.playerList [GamePlayManager.playerList.IndexOf (GameState.currentPlayer) + 1];
+				}
 			}
 		
 		} else {
