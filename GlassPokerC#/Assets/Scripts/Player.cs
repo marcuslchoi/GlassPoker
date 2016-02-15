@@ -209,7 +209,7 @@ public class Player : Photon.MonoBehaviour {
 	{
 		//CHECK BUTTON SHOULD NOT BE VISIBLE IF PLAYER CAN'T CHECK
 
-		//can't check during pre-flop unless you are straddle/big blind
+		//TODO: can't check during pre-flop unless you are straddle/big blind
 
 		//move the current player to the next player if bet is equal to previous bet
 		if (GameState.currentPlayer.myBetAmount == GameState.lastBetAmount) {
@@ -243,6 +243,39 @@ public class Player : Photon.MonoBehaviour {
 		
 			//CHECK BUTTON DOES NOTHING IF MY BET DOES NOT EQUAL PREVIOUS BET
 		}
+	}
+
+	[PunRPC]
+	public void Straddle()
+	{
+		//straddle player bets straddle amount
+		GameState.currentPlayer.myBetAmount = GameState.straddleAmount;
+		GameState.currentPlayer.myChipAmount -= GameState.straddleAmount;
+
+		//TODO: DEAL CARDS HERE
+
+		//make next player the new current player
+		if (GamePlayManager.playerList.IndexOf (GameState.currentPlayer) == GamePlayManager.playerList.Count - 1) {
+
+			GameState.currentPlayer = GamePlayManager.playerList [0];
+
+		} else {
+
+			GameState.currentPlayer = GamePlayManager.playerList [GamePlayManager.playerList.IndexOf (GameState.currentPlayer) + 1];
+		}
+
+	}
+
+	[PunRPC]
+	public void PassStraddle()
+	{
+		//straddle is no longer defined for current game
+		GameState.straddlePlayer = null;
+
+		//current player is already the right one
+
+		//TODO: DEAL CARDS HERE
+
 	}
 
 	[PunRPC]

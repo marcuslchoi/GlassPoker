@@ -132,7 +132,6 @@ public class GamePlayManager : Photon.PunBehaviour {
 
 		Player playerScript = playerGO.GetComponent<Player> ();
 
-//		AddingPlayerToList ();
 		playerList.Add (playerScript);
 
 		playerScript.ID = PhotonNetwork.player.ID;
@@ -155,18 +154,34 @@ public class GamePlayManager : Photon.PunBehaviour {
 		
 	public static void StartGame () {
 
+
+
 		print ("number of players in playerList is " + playerList.Count);
 
-		//ANIMATE THE SHUFFLING DECK WITH SOUND
+		//TODO: ANIMATE THE SHUFFLING DECK WITH SOUND
 		//SYNC THIS ACROSS THE NETWORK
-		GameState.ShuffleDeck ();
+//		GameState.ShuffleDeck ();
 
+		GamePlayManager gpm = GameObject.Find ("GamePlayManager").GetComponent<GamePlayManager> ();
 
-
+		//USE MASTER CLIENT??
+		if (PhotonNetwork.isMasterClient) {
+		
+			gpm.ShuffleDeckCalltoRPC ();
+		}
 		//game starts at preDeal round, ASK STRADDLE FOR BET
 		GameState.currentRound = GameState.Rounds.isPreDeal;
 
-		//DEAL THE CARDS HERE TO ONLY THE PLAYERS PRESENT
+		//TODO: INCREMENT DEALER SINCE LAST GAME 
+		GameState.dealer = playerList [0];
+
+		GameState.OnGameStarted ();
+
+		GameState.currentPlayer = GameState.straddlePlayer;
+
+		//TODO: SHOW BUTTONS FOR CURRENT PLAYER
+
+		//TODO: DEAL THE CARDS HERE TO ONLY THE PLAYERS PRESENT
 
 //		Player player;
 //		playerList = new List<Player>();
@@ -366,17 +381,29 @@ public class GamePlayManager : Photon.PunBehaviour {
 		this.myPhotonView.RPC ("ConfirmBet", PhotonTargets.All);
 	}
 
+	public void CheckButtonPressed () 
+	{
+
+		this.myPhotonView.RPC ("Check", PhotonTargets.All);
+	}
+
+	public void StraddleButtonPressed () 
+	{
+
+		this.myPhotonView.RPC ("Straddle", PhotonTargets.All);
+	}
+
+	public void PassStraddleButtonPressed () 
+	{
+
+		this.myPhotonView.RPC ("PassStraddle", PhotonTargets.All);
+	}
+
+	//TODO: THIS STILL GENERATES A DIFFERENT DECK FOR EACH PLAYER
 	public void ShuffleDeckCalltoRPC()
 	{
 	
 		this.myPhotonView.RPC ("ShuffleDeckRPC", PhotonTargets.All);
 	}
-
-//	public void AddingPlayerToList()
-//	{
-//		this.myPhotonView.RPC ("AddPlayerToList", PhotonTargets.All);
-//
-//	}
-		
-		
+				
 }

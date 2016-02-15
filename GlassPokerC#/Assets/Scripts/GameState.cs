@@ -16,7 +16,7 @@ public class GameState : Photon.MonoBehaviour {
 	//straddle only exists if he decides to bet before the cards are dealt
 	public static Player straddlePlayer;
 
-	public static int smallBlindAmount;
+	public static int smallBlindAmount, bigBlindAmount, straddleAmount;
 
 	public static int lastBetAmount;
 
@@ -29,13 +29,46 @@ public class GameState : Photon.MonoBehaviour {
 
 	//public static bool isPreDeal, isPreFlop, isFlop, isPreTurn, isTurn, isPreRiver, isRiver, isShowdown; 
 
-	void Start() {
+	public static void OnGameStarted() {
 
+		//TODO: GRAB THIS FROM SERVER 
 		smallBlindAmount = 1;
 
+		bigBlindAmount = 2 * smallBlindAmount;
+		straddleAmount = 2 * bigBlindAmount;
+
 		currentMinRaise = 2 * smallBlindAmount;
+
+		//make smallblindplayer the next player in list after dealer
+		if (GamePlayManager.playerList.IndexOf (dealer) == GamePlayManager.playerList.Count - 1) {
+
+			smallBlindPlayer = GamePlayManager.playerList [0];
+
+		} else {
+
+			smallBlindPlayer = GamePlayManager.playerList [GamePlayManager.playerList.IndexOf (dealer) + 1];
+		}
+
+		//assign big blind player
+		if (GamePlayManager.playerList.IndexOf (smallBlindPlayer) == GamePlayManager.playerList.Count - 1) {
+
+			bigBlindPlayer = GamePlayManager.playerList [0];
+
+		} else {
+
+			bigBlindPlayer = GamePlayManager.playerList [GamePlayManager.playerList.IndexOf (smallBlindPlayer) + 1];
+		}
+
+		//assign straddle player
+		if (GamePlayManager.playerList.IndexOf (bigBlindPlayer) == GamePlayManager.playerList.Count - 1) {
+
+			straddlePlayer = GamePlayManager.playerList [0];
+
+		} else {
+
+			straddlePlayer = GamePlayManager.playerList [GamePlayManager.playerList.IndexOf (bigBlindPlayer) + 1];
+		}
 	
-		//ShuffleDeck ();
 
 	}
 
