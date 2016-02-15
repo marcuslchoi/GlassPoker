@@ -49,6 +49,7 @@ public class GameState : Photon.MonoBehaviour {
 			shuffledDeck[i] = shuffledDeck[randomIndex];
 			shuffledDeck[randomIndex] = temp;
 
+			print (i+": "+shuffledDeck [i]);
 		}
 	
 	}

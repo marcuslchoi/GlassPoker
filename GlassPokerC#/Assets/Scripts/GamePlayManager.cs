@@ -82,6 +82,7 @@ public class GamePlayManager : Photon.PunBehaviour {
 		}
 
 	}
+	bool gameStarted = false;
 
 	void Update() {
 	
@@ -95,8 +96,9 @@ public class GamePlayManager : Photon.PunBehaviour {
 			playerList.Add (otherPlayer);
 		}
 
-		if (playerList.Count > 1) {
+		if (playerList.Count > 1 && gameStarted == false) {
 		
+			gameStarted = true;
 			StartGame ();
 		}
 	
@@ -156,8 +158,12 @@ public class GamePlayManager : Photon.PunBehaviour {
 		print ("number of players in playerList is " + playerList.Count);
 
 		//ANIMATE THE SHUFFLING DECK WITH SOUND
+		//SYNC THIS ACROSS THE NETWORK
 		GameState.ShuffleDeck ();
 
+
+
+		//game starts at preDeal round, ASK STRADDLE FOR BET
 		GameState.currentRound = GameState.Rounds.isPreDeal;
 
 		//DEAL THE CARDS HERE TO ONLY THE PLAYERS PRESENT
@@ -358,6 +364,12 @@ public class GamePlayManager : Photon.PunBehaviour {
 	{
 		
 		this.myPhotonView.RPC ("ConfirmBet", PhotonTargets.All);
+	}
+
+	public void ShuffleDeckCalltoRPC()
+	{
+	
+		this.myPhotonView.RPC ("ShuffleDeckRPC", PhotonTargets.All);
 	}
 
 //	public void AddingPlayerToList()

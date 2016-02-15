@@ -245,6 +245,13 @@ public class Player : Photon.MonoBehaviour {
 		}
 	}
 
+	[PunRPC]
+	public void ShuffleDeckRPC()
+	{
+		GameState.ShuffleDeck ();
+	
+	}
+
 //	[PunRPC]
 //	public void AddPlayerToList()
 //	{

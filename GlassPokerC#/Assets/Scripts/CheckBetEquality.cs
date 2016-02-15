@@ -38,6 +38,18 @@ public class CheckBetEquality : MonoBehaviour {
 			//total of all bets combined
 			totalBetsAmount = betAmount * GamePlayManager.playerList.Count;
 
+			//move to next round if not at showdown
+			if (GameState.currentRound != GameState.Rounds.isShowdown) {
+			
+				GameState.currentRound++;
+			
+			} else {
+			
+				//SHOW THE CARDS OF THE PLAYERS IN SHOWDOWN
+				//WINNING LOGIC GOES HERE
+			
+			}
+
 //			GameObject cbeObject = GameObject.Find ("CheckBetEquality");
 //			CheckBetEquality cbe = cbeObject.GetComponent<CheckBetEquality> ();
 //

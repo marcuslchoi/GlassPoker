@@ -44,7 +44,7 @@ public class FlopDeal : MonoBehaviour {
 			//yield return new WaitForSeconds (timeBetweenCards);
 		}
 			
-		//rotate the cards
+		//flip the cards
 		for (var i = 0; i < cards.Length; i++) {
 
 			startTime = Time.time;
