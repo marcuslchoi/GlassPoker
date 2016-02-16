@@ -8,11 +8,12 @@ public class CheckBetEquality : MonoBehaviour {
 	//all bet amounts combined
 	static int totalBetsAmount;
 
-	public static bool betsAreEqual; // = false;
-
 	public static bool CheckIfBetsAreEqual()
 	{
+		//this is the return value
+		bool betsAreEqual = false;
 
+		//if bets are equal, this is the bet amount of each player
 		int betAmount = 0;
 
 		//check if all bets are equal. If so, move bets to pot and begin next round or showdown
@@ -20,7 +21,7 @@ public class CheckBetEquality : MonoBehaviour {
 
 			if (GamePlayManager.playerList[i].myBetAmount != GamePlayManager.playerList[i+1].myBetAmount) {
 			
-				betsAreEqual = false;
+				//betsAreEqual = false;
 				break;
 			
 			//checked the last 2 players and they have equal bet amount
@@ -28,43 +29,21 @@ public class CheckBetEquality : MonoBehaviour {
 				
 				betAmount = GamePlayManager.playerList[i].myBetAmount;
 
+				//total of all bets combined
+				totalBetsAmount = betAmount * GamePlayManager.playerList.Count;
+
 				betsAreEqual = true;
 			}
-		}
-
-		//if bets are all equal, move the bets to pot
-		if (betsAreEqual) {
-
-			//total of all bets combined
-			totalBetsAmount = betAmount * GamePlayManager.playerList.Count;
-
-			//move to next round if not at showdown
-			if (GameState.currentRound != GameState.Rounds.isShowdown) {
-			
-				GameState.currentRound++;
-			
-			} else {
-			
-				//TODO: SHOW THE CARDS OF THE PLAYERS IN SHOWDOWN
-				//WINNING LOGIC GOES HERE
-			
-			}
-
-//			GameObject cbeObject = GameObject.Find ("CheckBetEquality");
-//			CheckBetEquality cbe = cbeObject.GetComponent<CheckBetEquality> ();
-//
-//			//move bets to pot after delay
-//			cbe.Invoke ("MoveBetsToPot", 2f);
 		}
 
 		return betsAreEqual;
 	
 	}
 
-	//SHOULD THIS STAY AS STATIC??
+	//moves all bets to pot, goes to next round, or does winning logic (if current round is showdown)
 	public static void MoveBetsToPot()
 	{
-		//BettingTextDisplay btd = GameObject.Find ("Chip and Bet Amount Texts").GetComponent<BettingTextDisplay> ();
+
 		//add all bets to pot
 		GameState.potAmount += totalBetsAmount;
 
@@ -77,14 +56,39 @@ public class CheckBetEquality : MonoBehaviour {
 		//ANIMATE THE BETS TO THE POT
 		print("moved bets to pot " +totalBetsAmount);
 
-		//DEAL THE CARD(S) OF THE CURRENT ROUND!!!
+		//move to next round if not at showdown
+		if (GameState.currentRound != GameState.Rounds.isShowdown) {
 
-		//Deal the flop - temporary spot
-		GameObject flopObject = GameObject.Find("FlopDeal");
-		FlopDeal fd = flopObject.GetComponent<FlopDeal>();
+			if (GameState.currentRound == GameState.Rounds.isPreFlop) {
 
-		fd.Flop ();
+				//Deal the flop 
+				GameObject flopObject = GameObject.Find ("FlopDeal");
+				FlopDeal fd = flopObject.GetComponent<FlopDeal> ();
 
+				fd.Flop ();
+			
+			} 
+			else if (GameState.currentRound == GameState.Rounds.isPreTurn) 
+			{
+				//DEAL THE TURN CARD
+			}
+			else if (GameState.currentRound == GameState.Rounds.isPreRiver) 
+			{
+				//DEAL THE RIVER CARD
+			}
+
+			//go to the next round
+			GameState.currentRound++;
+
+		} else //current round is showdown 
+		{
+
+			//TODO: SHOW THE CARDS OF THE PLAYERS IN SHOWDOWN
+			//TODO: ANIMATE WINNER SCENE
+
+			GamePlayManager.AddPointsToWinners ();
+
+		}
 	}
 
 }

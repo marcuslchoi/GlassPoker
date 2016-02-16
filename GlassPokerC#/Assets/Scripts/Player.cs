@@ -46,8 +46,37 @@ public class Player : Photon.MonoBehaviour {
 
 		myChipAmount -= myBetAmount;
 
-		//isCurrentPlayer = false;
-		//isPreviousPlayer = true;
+		//if the round is pre-flop, checking to see if straddle or big blind wants to raise or check (if bets are equal)
+		if (GameState.currentRound == GameState.Rounds.isPreFlop) 
+		{
+
+			//check if bets are equal. If so, if current player is straddle, can raise or check.
+				//if straddle doesn't exist, check for big blind
+			if (CheckBetEquality.CheckIfBetsAreEqual ()) 
+			{
+			
+				//if straddle player exists
+				if (GameState.straddlePlayer != null) 
+				{
+				
+					if (GameState.currentPlayer == GameState.straddlePlayer) 
+					{
+						//straddle player can raise or check
+
+					}
+						
+				} else //straddle player does not exist 
+				{
+					if (GameState.currentPlayer == GameState.bigBlindPlayer) 
+					{
+						//big blind player can raise or check
+
+					}
+				}
+			}
+
+		}
+
 
 		//the possible new current player (if bets are not equal or if he is the straddle)
 		Player newCurrentPlayer;
@@ -62,13 +91,15 @@ public class Player : Photon.MonoBehaviour {
 			newCurrentPlayer = GamePlayManager.playerList [GamePlayManager.playerList.IndexOf (GameState.currentPlayer) + 1];
 		}
 
+
+
 		//NEED CHECK FOR BIG BLIND IF STRADDLE DOES NOT EXIST
 		//check if new current player is straddle. If not, check if bets are equal
 		//ALSO CHECK IF PRE-FLOP?
 		if (newCurrentPlayer == GameState.straddlePlayer) {
 
-			CheckBetEquality.CheckIfBetsAreEqual ();
-			if (CheckBetEquality.betsAreEqual) {
+
+			if (CheckBetEquality.CheckIfBetsAreEqual ()) {
 			
 				//MOVE BETS TO POT AND DEAL THE NEW COMM CARDS DEPENDING ON GAME STATE
 				//NEED TO SPLIT UP THE CHECKIFBETSEQUAL FUNCTION
@@ -183,8 +214,8 @@ public class Player : Photon.MonoBehaviour {
 			//ALSO CHECK IF PRE-FLOP?
 			if (newCurrentPlayer == GameState.straddlePlayer) {
 
-				CheckBetEquality.CheckIfBetsAreEqual ();
-				if (CheckBetEquality.betsAreEqual) {
+
+				if (CheckBetEquality.CheckIfBetsAreEqual ()) {
 
 					//MOVE BETS TO POT AND DEAL THE NEW COMM CARDS DEPENDING ON GAME STATE
 					//NEED TO SPLIT UP THE CHECKIFBETSEQUAL FUNCTION
@@ -254,6 +285,14 @@ public class Player : Photon.MonoBehaviour {
 
 		//TODO: DEAL CARDS HERE
 		//HOW DO I MAKE SURE EVERY PLAYER SEES THIS ANIMATION??
+
+//		//AT THIS POINT, THIS CODE GENERATES ENTIRE 7 CARD HAND FOR THE PLAYERS PRESENT
+//		//generate the 2 card hands
+//		GamePlayManager.GenerateTwoCardHands ();
+//		//generate the community cards to add to 7 card hands
+//		GamePlayManager.GenerateCommCards ();
+//		//create the hand object for each player (also creates player.hand.twoCardList)
+//		GamePlayManager.GeneratePlayerHands ();
 
 		//make next player the new current player
 		if (GamePlayManager.playerList.IndexOf (GameState.currentPlayer) == GamePlayManager.playerList.Count - 1) {
