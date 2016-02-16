@@ -10,7 +10,7 @@ public class GamePlayManager : Photon.PunBehaviour {
 	//GENERATE A HAND FOR EACH PLAYER IN GAME. MAKE SURE THERE ARE 5 COMM CARDS.
 	//COMPARE THEM AND ADD POINTS TO THE WINNER
 
-	private PhotonView myPhotonView;
+	private PhotonView gpmPhotonView;
 
 	//these are the players that are present in the current game, identified by player number
 	public static List<int> playerIDs = new List<int>();
@@ -32,6 +32,8 @@ public class GamePlayManager : Photon.PunBehaviour {
 	//connect
 	void Start () {
 		PhotonNetwork.ConnectUsingSettings ("0.1");
+
+		gpmPhotonView = this.GetComponent<PhotonView> ();
 
 		//when game starts, the slider, slider value text, and confirm bet is inactive. 
 		//Slider is activated when bet/raise button is pressed
@@ -69,24 +71,12 @@ public class GamePlayManager : Photon.PunBehaviour {
 
 		playerIDs.Add (photonPlayer.ID); 
 
-//		UpdatePlayerList ();
-
+		//I PUT THIS IN UPDATE FUNCTION TEMPORARILY
 		if (PhotonNetwork.playerList.Length > 1) {
-
 
 			//DOESN'T WORK
 //			Player otherPlayer = GameObject.Find ("Player(Clone)").GetComponent<Player> ();
-//
-//			otherPlayer.ID = photonPlayer.ID;
-//
-//			playerList.Add (otherPlayer);
 
-//			StartGame ();
-
-//			CheckBetEquality.CheckIfBetsAreEqual ();
-//
-//			//NOT WORKING ON OTHERS. ONLY UPDATES MY TEXT, OTHERS KNOW THAT MY TEXT IS UPDATED
-//			this.myPhotonView.RPC ("UpdateGSText", PhotonTargets.All);
 		}
 
 	}
@@ -129,30 +119,20 @@ public class GamePlayManager : Photon.PunBehaviour {
 
 		myPlayerText.text = "player with ID " + PhotonNetwork.player.ID + " joined room";
 
-		//HOW DO I USE PHOTON PLAYERS WITH MY OWN PLAYER PROPERTIES???
+		//TODO: HOW DO I USE PHOTON PLAYERS WITH MY OWN PLAYER PROPERTIES???
+		//for now I am creating a list of Players (script type) with the same IDs as photonPlayers
 		print("Number of Photon Players: "+ PhotonNetwork.playerList.Length);
 
 		//instantiate the player object that just joined (this player needs to have an associated ID)
 		GameObject playerGO = PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity, 0);
 
-		//ADDING THIS PLAYER TO PLAYERLIST INSTEAD OF CREATING A NEW PLAYER WITH SAME ID
-		myPhotonView = playerGO.GetComponent<PhotonView>();
-
 		Player playerScript = playerGO.GetComponent<Player> ();
-
-		playerList.Add (playerScript);
 
 		playerScript.ID = PhotonNetwork.player.ID;
 
-		playerScript.myBetAmount = 2;
-
-		Text myBetAmountText = GameObject.Find ("MyBetAmount").GetComponent<Text> ();
-		myBetAmountText.text = playerScript.myBetAmount.ToString ();
-
-		//print (playerScript.ID);
-
-		//use the Photon Player IDs as player IDs to create player objects
-//		playerIDs.Add (PhotonNetwork.player.ID); 
+		//adding this player to static list GamePlayManager.playerList
+		//TODO: SYNC THIS LIST ACROSS THE NETWORK
+		playerList.Add (playerScript);
 
 		if (PhotonNetwork.playerList.Length > 1) {
 		
@@ -162,23 +142,12 @@ public class GamePlayManager : Photon.PunBehaviour {
 		
 	public static void StartGame () {
 
-
-
 		print ("number of players in playerList is " + playerList.Count);
 
 		//TODO: ANIMATE THE SHUFFLING DECK WITH SOUND
 		//SYNC THIS ACROSS THE NETWORK
-//		GameState.ShuffleDeck ();
+		GameState.shuffledDeck = ShuffleDeck();
 
-		GamePlayManager gpm = GameObject.Find ("GamePlayManager").GetComponent<GamePlayManager> ();
-
-
-		//TODO: HAVE THE SHUFFLE DECK METHOD RETURN THE SHUFFLED DECK, STORE THAT VALUE AND HAVE THE MASTER CLIENT BROADCAST THAT VALUE
-		//USE MASTER CLIENT??
-		if (PhotonNetwork.isMasterClient) {
-		
-			gpm.ShuffleDeckCalltoRPC ();
-		}
 		//game starts at preDeal round, ASK STRADDLE FOR BET
 		GameState.currentRound = GameState.Rounds.isPreDeal;
 
@@ -200,19 +169,7 @@ public class GamePlayManager : Photon.PunBehaviour {
 
 		//TODO: SHOW BUTTONS FOR CURRENT PLAYER
 
-		//TODO: DEAL THE CARDS HERE TO ONLY THE PLAYERS PRESENT
-
-//		Player player;
-//		playerList = new List<Player>();
-
-//		//creating new Player objects using PhotonPlayer IDs
-//		foreach (int playerID in playerIDs) {
-//		
-//			player = new Player (playerID);
-//
-//			playerList.Add (player);
-//		
-//		}
+		//TODO: ANIMATE THE DEALING OF CARDS HERE TO ONLY THE PLAYERS PRESENT
 
 //----------DEALING THE CARDS TO PLAYERS---------------------------// 
 
@@ -252,6 +209,25 @@ public class GamePlayManager : Photon.PunBehaviour {
 
 		//ONLY CALL IF IT GETS TO SHOWDOWN
 		AddPointsToWinners ();
+
+	}
+
+	public static List<string> ShuffleDeck () 
+	{
+
+		List<string> myShuffledDeck = Hand.cardNames.ToList();
+
+		//random shuffle the cards
+		for (int i = 0; i < myShuffledDeck.Count; i++) {			
+			string temp = myShuffledDeck[i];
+			int randomIndex = Random.Range(i, myShuffledDeck.Count);
+			myShuffledDeck[i] = myShuffledDeck[randomIndex];
+			myShuffledDeck[randomIndex] = temp;
+
+			print (i+": "+myShuffledDeck [i]);
+		}
+
+		return myShuffledDeck;
 
 	}
 
@@ -378,12 +354,12 @@ public class GamePlayManager : Photon.PunBehaviour {
 	//so everyone knows that current player called
 	public void CallButtonPressed()
 	{
-		this.myPhotonView.RPC ("Call", PhotonTargets.All);	
+		gpmPhotonView.RPC ("Call", PhotonTargets.All);	
 	}
 
 	public void FoldButtonPressed()
 	{
-		this.myPhotonView.RPC ("Fold", PhotonTargets.All);	
+		gpmPhotonView.RPC ("Fold", PhotonTargets.All);	
 	}
 
 	public void BetButtonPressed()
@@ -397,32 +373,25 @@ public class GamePlayManager : Photon.PunBehaviour {
 	public void ConfirmBetButtonPressed () 
 	{
 		
-		this.myPhotonView.RPC ("ConfirmBet", PhotonTargets.All);
+		gpmPhotonView.RPC ("ConfirmBet", PhotonTargets.All);
 	}
 
 	public void CheckButtonPressed () 
 	{
 
-		this.myPhotonView.RPC ("Check", PhotonTargets.All);
+		gpmPhotonView.RPC ("Check", PhotonTargets.All);
 	}
 
 	public void StraddleButtonPressed () 
 	{
 
-		this.myPhotonView.RPC ("Straddle", PhotonTargets.All);
+		gpmPhotonView.RPC ("Straddle", PhotonTargets.All);
 	}
 
 	public void PassStraddleButtonPressed () 
 	{
 
-		this.myPhotonView.RPC ("PassStraddle", PhotonTargets.All);
-	}
-
-	//TODO: THIS STILL GENERATES A DIFFERENT DECK FOR EACH PLAYER
-	public void ShuffleDeckCalltoRPC()
-	{
-	
-		this.myPhotonView.RPC ("ShuffleDeckRPC", PhotonTargets.All);
+		gpmPhotonView.RPC ("PassStraddle", PhotonTargets.All);
 	}
 				
 }

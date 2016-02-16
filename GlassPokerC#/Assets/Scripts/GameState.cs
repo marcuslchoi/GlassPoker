@@ -70,18 +70,21 @@ public class GameState : Photon.MonoBehaviour {
 
 	}
 
-	public static void ShuffleDeck () {
+	public static List<string> ShuffleDeck () {
 
-		shuffledDeck = Hand.cardNames.ToList();
+		List<string> myShuffledDeck = Hand.cardNames.ToList();
+
 		//random shuffle the cards
-		for (int i = 0; i < shuffledDeck.Count; i++) {			
-			string temp = shuffledDeck[i];
-			int randomIndex = Random.Range(i, shuffledDeck.Count);
-			shuffledDeck[i] = shuffledDeck[randomIndex];
-			shuffledDeck[randomIndex] = temp;
+		for (int i = 0; i < myShuffledDeck.Count; i++) {			
+			string temp = myShuffledDeck[i];
+			int randomIndex = Random.Range(i, myShuffledDeck.Count);
+			myShuffledDeck[i] = myShuffledDeck[randomIndex];
+			myShuffledDeck[randomIndex] = temp;
 
-			print (i+": "+shuffledDeck [i]);
+			print (i+": "+myShuffledDeck [i]);
 		}
+
+		return myShuffledDeck;
 	
 	}
 }
