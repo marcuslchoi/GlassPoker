@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine.Networking;
 //using System.Linq;
 
+//DELETE THIS
 public class BettingTextDisplay : NetworkBehaviour {
 
 	public Text[] chipAmountText;

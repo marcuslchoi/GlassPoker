@@ -27,8 +27,6 @@ public class GameState : Photon.MonoBehaviour {
 
 	public static Rounds currentRound;
 
-	//public static bool isPreDeal, isPreFlop, isFlop, isPreTurn, isTurn, isPreRiver, isRiver, isShowdown; 
-
 	public static void OnGameStarted() {
 
 		//TODO: GRAB THIS FROM SERVER 

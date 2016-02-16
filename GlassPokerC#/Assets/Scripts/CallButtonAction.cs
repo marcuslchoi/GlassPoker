@@ -4,7 +4,7 @@ using System.Collections;
 
 public class CallButtonAction : MonoBehaviour {
 
-
+	//MOVED TO PLAYER RPC
 	public void Call()
 	{
 

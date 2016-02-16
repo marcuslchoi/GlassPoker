@@ -45,7 +45,7 @@ public class CheckBetEquality : MonoBehaviour {
 			
 			} else {
 			
-				//SHOW THE CARDS OF THE PLAYERS IN SHOWDOWN
+				//TODO: SHOW THE CARDS OF THE PLAYERS IN SHOWDOWN
 				//WINNING LOGIC GOES HERE
 			
 			}

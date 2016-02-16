@@ -32,6 +32,14 @@ public class GamePlayManager : Photon.PunBehaviour {
 	//connect
 	void Start () {
 		PhotonNetwork.ConnectUsingSettings ("0.1");
+
+		//when game starts, the slider, slider value text, and confirm bet is inactive. 
+		//Slider is activated when bet/raise button is pressed
+		GameObject.Find("BetSlider").SetActive(false);
+		GameObject.Find ("SliderValText").GetComponent<Text> ().text = "";
+		GameObject.Find ("ConfirmBetButton").SetActive (false);
+
+		//TODO: SET MENU BUTTONS HERE? 
 	}
 
 	void OnGUI()
@@ -164,6 +172,8 @@ public class GamePlayManager : Photon.PunBehaviour {
 
 		GamePlayManager gpm = GameObject.Find ("GamePlayManager").GetComponent<GamePlayManager> ();
 
+
+		//TODO: HAVE THE SHUFFLE DECK METHOD RETURN THE SHUFFLED DECK, STORE THAT VALUE AND HAVE THE MASTER CLIENT BROADCAST THAT VALUE
 		//USE MASTER CLIENT??
 		if (PhotonNetwork.isMasterClient) {
 		
@@ -175,7 +185,16 @@ public class GamePlayManager : Photon.PunBehaviour {
 		//TODO: INCREMENT DEALER SINCE LAST GAME 
 		GameState.dealer = playerList [0];
 
+		//assigns the small blind player, big blind player and straddle player based on the dealer
 		GameState.OnGameStarted ();
+
+		//small blind
+		GameState.smallBlindPlayer.myBetAmount = GameState.smallBlindAmount;
+		GameState.smallBlindPlayer.myChipAmount -= GameState.smallBlindPlayer.myBetAmount;
+
+		//big blind
+		GameState.bigBlindPlayer.myBetAmount = GameState.bigBlindAmount;
+		GameState.bigBlindPlayer.myChipAmount -= GameState.bigBlindPlayer.myBetAmount;
 
 		GameState.currentPlayer = GameState.straddlePlayer;
 
