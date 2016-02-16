@@ -167,13 +167,11 @@ public class GamePlayManager : Photon.PunBehaviour {
 
 		GameState.currentPlayer = GameState.straddlePlayer;
 
-		//TODO: MOVE THE REST OF THIS OUT OF START GAME FUNCTION
 		//TODO: SHOW BUTTONS FOR CURRENT PLAYER
-
-		//TODO: ANIMATE THE DEALING OF CARDS HERE TO ONLY THE PLAYERS PRESENT
 
 //----------DEALING THE CARDS TO PLAYERS---------------------------// 
 
+		//TODO: MOVE THESE TO STRADDLE/PASS STRADDLE
 		GenerateTwoCardHands ();
 
 		//generate the community cards to add to 7 card hands
@@ -206,7 +204,7 @@ public class GamePlayManager : Photon.PunBehaviour {
 
 	}
 
-	static void GenerateTwoCardHands()
+	public static void GenerateTwoCardHands()
 	{
 		indexOfShuffledDeck = new int ();
 
@@ -231,14 +229,14 @@ public class GamePlayManager : Photon.PunBehaviour {
 				twoCardList.Add(GameState.shuffledDeck [indexOfShuffledDeck]);
 
 			}
-
+				
 			twoCardLists.Add (twoCardList);
 
 		}
 	
 	}
 
-	static void GenerateCommCards() 
+	public static void GenerateCommCards() 
 	{
 	
 		//generate the community cards
@@ -257,7 +255,7 @@ public class GamePlayManager : Photon.PunBehaviour {
 
 	}
 
-	static void GeneratePlayerHands() 
+	public static void GeneratePlayerHands() 
 	{
 
 		//each player's full hand of cards

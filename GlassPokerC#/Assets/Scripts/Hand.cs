@@ -23,6 +23,7 @@ public class Hand : MonoBehaviour {
 	{
 		cards = cArray;
 
+		//this removes the 5 comm cards at the end of the list
 		twoCardList = cards.ToList ();
 		twoCardList.RemoveRange (2, 5);
 	}
