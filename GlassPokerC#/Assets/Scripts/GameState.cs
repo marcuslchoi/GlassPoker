@@ -69,22 +69,5 @@ public class GameState : Photon.MonoBehaviour {
 	
 
 	}
-
-	public static List<string> ShuffleDeck () {
-
-		List<string> myShuffledDeck = Hand.cardNames.ToList();
-
-		//random shuffle the cards
-		for (int i = 0; i < myShuffledDeck.Count; i++) {			
-			string temp = myShuffledDeck[i];
-			int randomIndex = Random.Range(i, myShuffledDeck.Count);
-			myShuffledDeck[i] = myShuffledDeck[randomIndex];
-			myShuffledDeck[randomIndex] = temp;
-
-			print (i+": "+myShuffledDeck [i]);
-		}
-
-		return myShuffledDeck;
-	
-	}
+		
 }

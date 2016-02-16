@@ -167,39 +167,14 @@ public class GamePlayManager : Photon.PunBehaviour {
 
 		GameState.currentPlayer = GameState.straddlePlayer;
 
+		//TODO: MOVE THE REST OF THIS OUT OF START GAME FUNCTION
 		//TODO: SHOW BUTTONS FOR CURRENT PLAYER
 
 		//TODO: ANIMATE THE DEALING OF CARDS HERE TO ONLY THE PLAYERS PRESENT
 
 //----------DEALING THE CARDS TO PLAYERS---------------------------// 
 
-		indexOfShuffledDeck = new int ();
-	
-		//list of 2 card lists 
-		twoCardLists = new List<List<string>>(playerList.Count);
-
-		List<string> twoCardList;
-
-		int playerIndex;
-
-		//for each player in game, generate a 2-card hand
-		for (playerIndex = 0; playerIndex < playerList.Count; playerIndex++) {
-
-			//create a new object for list of lists to point to
-			twoCardList = new List<string>(2);
-
-			//generate a 2 card hand
-			for (int i = 0; i < 2; i++) 
-			{
-				indexOfShuffledDeck = 2*playerIndex + i;
-
-				twoCardList.Add(GameState.shuffledDeck [indexOfShuffledDeck]);
-
-			}
-
-			twoCardLists.Add (twoCardList);
-
-		}
+		GenerateTwoCardHands ();
 
 		//generate the community cards to add to 7 card hands
 		GenerateCommCards ();
@@ -231,12 +206,46 @@ public class GamePlayManager : Photon.PunBehaviour {
 
 	}
 
-	static void GenerateCommCards() {
+	static void GenerateTwoCardHands()
+	{
+		indexOfShuffledDeck = new int ();
+
+		//list of 2 card lists 
+		twoCardLists = new List<List<string>>(playerList.Count);
+
+		List<string> twoCardList;
+
+		int playerIndex;
+
+		//for each player in game, generate a 2-card hand
+		for (playerIndex = 0; playerIndex < playerList.Count; playerIndex++) {
+
+			//create a new object for list of lists to point to
+			twoCardList = new List<string>(2);
+
+			//generate a 2 card hand
+			for (int i = 0; i < 2; i++) 
+			{
+				indexOfShuffledDeck = 2*playerIndex + i;
+
+				twoCardList.Add(GameState.shuffledDeck [indexOfShuffledDeck]);
+
+			}
+
+			twoCardLists.Add (twoCardList);
+
+		}
+	
+	}
+
+	static void GenerateCommCards() 
+	{
 	
 		//generate the community cards
 		commCards = new List<string>(5);
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 5; i++) 
+		{
 
 			indexOfShuffledDeck++;
 
@@ -248,7 +257,8 @@ public class GamePlayManager : Photon.PunBehaviour {
 
 	}
 
-	static void GeneratePlayerHands() {
+	static void GeneratePlayerHands() 
+	{
 
 		//each player's full hand of cards
 		string[] myCards;
@@ -257,7 +267,8 @@ public class GamePlayManager : Photon.PunBehaviour {
 		Hand myHand;
 
 		//creating the Hand object for each player and assigning it to the player
-		for (int playerIndex = 0; playerIndex < playerList.Count; playerIndex++) {
+		for (int playerIndex = 0; playerIndex < playerList.Count; playerIndex++) 
+		{
 
 			myCards = new string[7];
 
@@ -281,7 +292,8 @@ public class GamePlayManager : Photon.PunBehaviour {
 
 	}
 
-	public static void AddPointsToWinners() {
+	public static void AddPointsToWinners() 
+	{
 	
 		//list of all ranks in the game
 		List<double> rankList = new List<double> ();
@@ -291,7 +303,8 @@ public class GamePlayManager : Photon.PunBehaviour {
 		double winRank = 0;
 
 		//get the ranks, find winner
-		for (int playerIndex = 0; playerIndex < playerList.Count; playerIndex++) {
+		for (int playerIndex = 0; playerIndex < playerList.Count; playerIndex++) 
+		{
 
 			//add each player's rank to the rank list
 			rankList.Add (playerList [playerIndex].hand.getRank ());
@@ -306,9 +319,11 @@ public class GamePlayManager : Photon.PunBehaviour {
 
 		int winPoints = 0;
 		//calculate the points to be added to winner(s)
-		foreach (double rank in rankList) {
+		foreach (double rank in rankList) 
+		{
 
-			if (rank != winRank) {
+			if (rank != winRank) 
+			{
 
 				winPoints += (int)Mathf.Floor ((float)rank) + 1;
 			}
@@ -316,9 +331,11 @@ public class GamePlayManager : Photon.PunBehaviour {
 
 		//check if there are multiple players with same win rank for tie game
 		//add points to winners and add 1 win
-		for (int playerIndex = 0; playerIndex < playerList.Count; playerIndex++) {
+		for (int playerIndex = 0; playerIndex < playerList.Count; playerIndex++) 
+		{
 
-			if (rankList [playerIndex] == winRank) {
+			if (rankList [playerIndex] == winRank) 
+			{
 
 				playerList [playerIndex].points += winPoints;
 				playerList [playerIndex].wins++;
@@ -329,15 +346,19 @@ public class GamePlayManager : Photon.PunBehaviour {
 		}
 
 		//print the winning (or tied) player IDs and win points
-		if (winningPlayers.Count > 1) {
+		if (winningPlayers.Count > 1) 
+		{
 
-			foreach (Player player in winningPlayers) {
+			foreach (Player player in winningPlayers) 
+			{
 
 				print ("Tied player ID " + player.ID + " earns " + winPoints + " points.");
 			}
 
 		//the winner
-		} else {
+		} else 
+		
+		{
 
 			print ("Winning player ID " + winningPlayers[0].ID + " earns " + winPoints + " points.");
 		}

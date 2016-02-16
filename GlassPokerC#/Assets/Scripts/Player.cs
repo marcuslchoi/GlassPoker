@@ -253,6 +253,7 @@ public class Player : Photon.MonoBehaviour {
 		GameState.currentPlayer.myChipAmount -= GameState.straddleAmount;
 
 		//TODO: DEAL CARDS HERE
+		//HOW DO I MAKE SURE EVERY PLAYER SEES THIS ANIMATION??
 
 		//make next player the new current player
 		if (GamePlayManager.playerList.IndexOf (GameState.currentPlayer) == GamePlayManager.playerList.Count - 1) {
@@ -277,20 +278,5 @@ public class Player : Photon.MonoBehaviour {
 		//TODO: DEAL CARDS HERE
 
 	}
-
-//	[PunRPC]
-//	public void AddPlayerToList()
-//	{
-//		GamePlayManager.playerList.Add (this);
-//	}
-
-//	[PunRPC]
-//	public void UpdateGSText() {
-//
-//		Text gsText = GameObject.Find ("GameStateText").GetComponent<Text> ();
-//
-//		gsText.text = "Game started";
-//
-//	}
 
 }
