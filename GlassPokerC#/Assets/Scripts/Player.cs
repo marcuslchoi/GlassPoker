@@ -40,43 +40,23 @@ public class Player : Photon.MonoBehaviour {
 	[PunRPC]
 	public void Call()
 	{
+		//TODO: IF STRADDLE JUST CALLED, MAKE STRADDLE NULL. ALSO BIG BLIND
+
+		foreach (Player player in GamePlayManager.playerList) {
+		
+			if (player.ID == 1) {
+			
+				player.myBetAmount++;
+				GameObject.Find ("MyBetAmountText").GetComponent<Text> ().text = player.myBetAmount.ToString ();
+			}
+		}
+
 		//add back my previous bet to my chips stack
 		myChipAmount += myBetAmount;
 		myBetAmount = GameState.lastBetAmount;
 
 		myChipAmount -= myBetAmount;
-
-		//if the round is pre-flop, checking to see if straddle or big blind wants to raise or check (if bets are equal)
-		if (GameState.currentRound == GameState.Rounds.isPreFlop) 
-		{
-
-			//check if bets are equal. If so, if current player is straddle, can raise or check.
-				//if straddle doesn't exist, check for big blind
-			if (CheckBetEquality.CheckIfBetsAreEqual ()) 
-			{
-			
-				//if straddle player exists
-				if (GameState.straddlePlayer != null) 
-				{
-				
-					if (GameState.currentPlayer == GameState.straddlePlayer) 
-					{
-						//straddle player can raise or check
-
-					}
-						
-				} else //straddle player does not exist 
-				{
-					if (GameState.currentPlayer == GameState.bigBlindPlayer) 
-					{
-						//big blind player can raise or check
-
-					}
-				}
-			}
-
-		}
-
+	
 
 		//the possible new current player (if bets are not equal or if he is the straddle)
 		Player newCurrentPlayer;
@@ -91,29 +71,66 @@ public class Player : Photon.MonoBehaviour {
 			newCurrentPlayer = GamePlayManager.playerList [GamePlayManager.playerList.IndexOf (GameState.currentPlayer) + 1];
 		}
 
+		//if the round is pre-flop, straddle or big blind can raise or check (if bets are equal)
+		if (GameState.currentRound == GameState.Rounds.isPreFlop) 
+		{
+			//if straddle player exists
+			if (GameState.straddlePlayer != null) {
+				
+				if (CheckBetEquality.CheckIfBetsAreEqual () && newCurrentPlayer != GameState.straddlePlayer) {
+					CheckBetEquality.MoveBetsToPot ();
+					GameState.currentRound++;
+
+					//TODO: MAKE FIRST PERSON TO LEFT OF DEALER THE NEW CURRENT PLAYER
+				
+				} else {
+				
+					GameState.currentPlayer = newCurrentPlayer;
+				}
 
 
-		//NEED CHECK FOR BIG BLIND IF STRADDLE DOES NOT EXIST
-		//check if new current player is straddle. If not, check if bets are equal
-		//ALSO CHECK IF PRE-FLOP?
-		if (newCurrentPlayer == GameState.straddlePlayer) {
+			} else { //straddle player doesn't exist so big blind has option of betting/checking
 
+				if (CheckBetEquality.CheckIfBetsAreEqual () && newCurrentPlayer != GameState.bigBlindPlayer) {
+					CheckBetEquality.MoveBetsToPot ();
+					GameState.currentRound++;
 
+					//TODO: MAKE FIRST PERSON TO LEFT OF DEALER THE NEW CURRENT PLAYER
+				
+				} else {
+
+					GameState.currentPlayer = newCurrentPlayer;
+				}
+			
+			}
+
+		} else //round is not preflop
+		
+		{ 
+			//if bets are equal
 			if (CheckBetEquality.CheckIfBetsAreEqual ()) {
 			
-				//MOVE BETS TO POT AND DEAL THE NEW COMM CARDS DEPENDING ON GAME STATE
-				//NEED TO SPLIT UP THE CHECKIFBETSEQUAL FUNCTION
-			
-			} else {
-			
-				GameState.currentPlayer = newCurrentPlayer;			
-			}
-		
-		//if new current player is the straddle, has option of raising or checking
-		} else {
-		
-			GameState.currentPlayer = newCurrentPlayer;	
+				CheckBetEquality.MoveBetsToPot ();
 
+				//if showdown
+				if (GameState.currentRound == GameState.Rounds.isShowdown) {
+				
+					GamePlayManager.AddPointsToWinners ();
+
+					//TODO: ANIMATE THE WIN, START NEW GAME
+
+				} else {
+				
+					GameState.currentRound++;
+
+					//TODO: MAKE FIRST PERSON TO LEFT OF DEALER THE NEW CURRENT PLAYER
+				}
+			
+			} else { //bets are not equal
+			
+				GameState.currentPlayer = newCurrentPlayer;
+				
+			}
 		}
 	}
 
@@ -121,6 +138,8 @@ public class Player : Photon.MonoBehaviour {
 	[PunRPC]
 	public void ConfirmBet()
 	{
+		//TODO: IF STRADDLE JUST BET, MAKE STRADDLE NULL. ALSO BIG BLIND
+
 		GameObject sliderObject = GameObject.Find ("BetSlider");
 		Slider betSlider = sliderObject.GetComponent<Slider> ();
 

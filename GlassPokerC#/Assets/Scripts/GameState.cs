@@ -10,6 +10,8 @@ public class GameState : Photon.MonoBehaviour {
 
 	public static int potAmount;
 
+	public static List<Player> GameBeginPlayerList; // = GamePlayManager.playerList;
+
 	public static Player currentPlayer;
 	public static Player dealer, smallBlindPlayer, bigBlindPlayer;
 
@@ -23,11 +25,15 @@ public class GameState : Photon.MonoBehaviour {
 	public static int currentMinRaise;
 
 	//the betting rounds and showdown
-	public enum Rounds {isPreDeal = 0, isPreFlop = 1, isFlop = 2, isPreTurn = 3, isTurn = 4, isPreRiver = 5, isRiver = 6, isShowdown = 7}
+	public enum Rounds {isPreDeal, isPreFlop, isFlop, isTurn, isRiver, isShowdown}
 
 	public static Rounds currentRound;
 
 	public static void OnGameStarted() {
+
+		//this is a permanent snapshot of playerlist at beginning of game. Used to find current player
+		//at beginning of each new round
+		GameBeginPlayerList = GamePlayManager.playerList;
 
 		//TODO: GRAB THIS FROM SERVER 
 		smallBlindAmount = 1;

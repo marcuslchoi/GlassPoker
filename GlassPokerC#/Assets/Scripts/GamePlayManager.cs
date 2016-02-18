@@ -12,6 +12,8 @@ public class GamePlayManager : Photon.PunBehaviour {
 
 	private PhotonView gpmPhotonView;
 
+	private PhotonView myPhotonView;
+
 	//these are the players that are present in the current game, identified by player number
 	public static List<int> playerIDs = new List<int>();
 
@@ -111,6 +113,14 @@ public class GamePlayManager : Photon.PunBehaviour {
 			Text otherPlayerText = GameObject.Find ("OtherPlayerNumber").GetComponent<Text> ();
 			otherPlayerText.text = "Other player already in room with ID: "+PhotonNetwork.playerList[0].ID;
 
+			//the first player in game
+			Player firstPlayer = GameObject.Find ("Player(Clone)").GetComponent<Player> ();
+
+			//TEMP HARDCODED
+			firstPlayer.ID = 1;
+
+			//playerList.Add (firstPlayer);
+
 		}
 
 		print ("player with ID "+PhotonNetwork.player.ID+" joined room");
@@ -127,6 +137,8 @@ public class GamePlayManager : Photon.PunBehaviour {
 		GameObject playerGO = PhotonNetwork.Instantiate("Player", Vector3.zero, Quaternion.identity, 0);
 
 		Player playerScript = playerGO.GetComponent<Player> ();
+
+//		myPhotonView = playerScript.GetComponent<PhotonView> ();
 
 		playerScript.ID = PhotonNetwork.player.ID;
 

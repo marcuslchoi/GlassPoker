@@ -68,11 +68,11 @@ public class CheckBetEquality : MonoBehaviour {
 				fd.Flop ();
 			
 			} 
-			else if (GameState.currentRound == GameState.Rounds.isPreTurn) 
+			else if (GameState.currentRound == GameState.Rounds.isFlop) 
 			{
 				//DEAL THE TURN CARD
 			}
-			else if (GameState.currentRound == GameState.Rounds.isPreRiver) 
+			else if (GameState.currentRound == GameState.Rounds.isTurn) 
 			{
 				//DEAL THE RIVER CARD
 			}
